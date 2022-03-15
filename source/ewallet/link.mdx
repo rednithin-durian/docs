@@ -1,0 +1,181 @@
+---
+title: Link E-Wallet Account API
+description:
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs'
+
+## Link E-Wallet Account
+
+The following endpoint Links Gopay Account:
+
+<url post = ""><div class = "ib"> /ewallet/account/bind </div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? |	Description |
+| ------ | -------------- | ------------- |
+| _mobile_ |	`mandatory` |	`string` The mobile to link e-wallet account |
+| _wallet_type_ |	`mandatory` |	`string` The e-wallet you want to link ex GOPAY |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -u [Base64({Your_Server_Key}:)] \ 
+-X POST 'https://api.durianpay.id/v1/ewallet/account/bind' \
+-H 'Is-live: true' \
+-H 'Content-Type: application/json' \
+-d '{"mobile": "8888888888", 
+     "wallet_type": "GOPAY"
+     }' 
+
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{\"mobile\": \"8888888888\", \n     \"wallet_type\": \"GOPAY\"\n     }"
+
+headers = {
+    'is-live': "true",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    'content-type': "application/json",
+    'cache-control': "no-cache",
+    'postman-token': "347a1482-3694-f9fa-3260-a8d6d575158d"
+    }
+
+conn.request("POST", "/v1/ewallet/account/bind", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\"mobile\": \"8888888888\", \n     \"wallet_type\": \"GOPAY\"\n     }");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/ewallet/account/bind")
+  .post(body)
+  .addHeader("is-live", "true")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .addHeader("content-type", "application/json")
+  .addHeader("cache-control", "no-cache")
+  .addHeader("postman-token", "ef1a49b4-c007-c35b-cfe4-f6e93f5f8d1e")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/ewallet/account/bind',
+  headers: 
+   { 'postman-token': '677b5a20-cece-dd17-b741-e3540b95e411',
+     'cache-control': 'no-cache',
+     'content-type': 'application/json',
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'is-live': 'true' },
+  body: { mobile: '8888888888', wallet_type: 'GOPAY' },
+  json: true };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/ewallet/account/bind")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["is-live"] = 'true'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request["content-type"] = 'application/json'
+request["cache-control"] = 'no-cache'
+request["postman-token"] = 'b5a99a61-08aa-9714-ee9b-13af3a1d9e9f'
+request.body = "{\"mobile\": \"8888888888\", \n     \"wallet_type\": \"GOPAY\"\n     }"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+   
+
+#### Response Code : 200 Bind Success
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "wallet_type": "GOPAY",
+        "mobile": "8888888888",
+        "ref_id": "7f125e70-095e-481d-8db8-241df9d5b86d",
+        "status": "pending",
+        "app_redirect_url": "https://simulator.sandbox.midtrans.com/gopay/partner/web/otp?id=14c95e30-0586-4270-961e-f3b0b3d3d2b0",
+        "message": "use redirection url to bind the account"
+    }
+}
+```
+
+#### Error Response Code : 400
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "Mobile number is missing in request",
+    "error_code": "DPAY_INVALID_REQUEST"
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response
+
+```js
+{
+    "error": "Error in binding e-wallet account",
+    "error_code": "DPAY_INTERNAL_ERROR"
+}
+```
+
+</div>

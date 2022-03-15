@@ -1,0 +1,40 @@
+---
+title: Payment Object
+description: 
+---
+
+<div class = 'pl-20 pr-20'>
+
+### Payment Life Cycle
+
+| Status |	Description |
+| ------- | ------------- |
+| `started` |	A payment is created when the customer fills up and submits the payment information and it is sent to Durianpay. No processing has been done on the payment at this stage |
+| `processing` |	An payment moves to `processing` state when the request is sent to payment processors downstream and a response is awaited |
+| `completed` |	When the status of the payment is changed to completed, the in processing payment is verified as complete by Durianpay. After the capture, the amount is settled to your account as per the settlement schedule of the bank |
+| `failed` |	Any unsuccessful transaction is marked as failed and the customer will have to retry the payment |
+| `refunded` |	You can refund the payments that have been successfully captured at your end. The amount is sent back to the customer's account |
+
+### Payment Entity
+
+| Field |	Description |
+| ----- | ------------- |
+| _id_ |	`string` The unique identifier of Payment |
+| _amount_ |	`string` The amount for which the Payment was created |
+| _currency_ |	`string` The currency associated with the Payment's amount |
+| _status_ |	`string` The status of Payment |
+| _type_ |	`string` Type of payment. Possible values `card`, `VA`, `wallet` |
+| _created_at_ |	`integer` Indicates the Unix timestamp when this Payment was created |
+| _metadata_ |	`json object` Key-Value pair that can be used to store additional information about the entity. e.g. `note`: `Force is with this payment` |
+
+### Payment Failure Codes 
+
+| code |	description |
+| ------ | ------------ |
+| 20010 |	error due to end user action |
+| 20011 |	merchant is either blocked or invalid |
+| 20012 |	payment expired |
+| 20013 |	error from provider |
+| 20014 |	payment cancelled by merchant |
+
+</div>

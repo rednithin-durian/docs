@@ -1,0 +1,1036 @@
+---
+title: Payment Charge API
+description:
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint charges the payment for all payment methods
+
+<url post = ""><div class = "ib">/payments/charge</div></url>
+
+**Basic Request Payload**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _type_ |	`mandatory` |	`string` type of payment, possible values - `"VA"`, `"EWALLET"`, `"CARD"`, `"RETAILSTORE"`, `"ONLINE_BANKING"`, `"QRIS"` |
+| _request_ |	`mandatory` |	`object` The payload object depending on the payment type |
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+## Virtual Account (VA) or Bank Transfer
+
+**Request Payload**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _type_ |	`mandatory` |	`string` `"VA"` |
+| _request_ |	`mandatory` |	`object` The payload object depending on the payment type |
+
+**Request object**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _order_id_ |	`mandatory` |	`string` The id returned from create order api |
+| _bank_code_ |	`mandatory` |	`string`  Bank codes for the relevant bank. Available banks: `BCA`, `BNI`, `BRI`, `MANDIRI`, `PERMATA`, `CIMB`, `BTPN`, `SAHABAT_SAMPOERNA`, `SINARMAS`, `MAYBANK`, `DANAMON`, `OTHERS` |
+| _name_ |	`mandatory` |	`string` Name that should appear in ATM |
+| _amount_ |	`mandatory` |	`string` Payment amount |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example Request for VA**
+
+<MultiCodeBlock>
+
+```bash
+# for VA
+curl -X POST \
+  https://api.durianpay.id/v1/payments/charge \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "type": "VA",
+    "request": {
+        "order_id": "ord_mJH2hKOSYb3514",
+        "bank_code": "MANDIRI",
+        "name": "Name Appear in ATM",
+        "amount": "20000"
+    }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{    \"type\": \"VA\",    \"request\": {        \"order_id\": \"ord_mJH2hKOSYb3514\",        \"bank_code\": \"MANDIRI\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000\"    }}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/payments/charge", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{    \"type\": \"VA\",    \"request\": {        \"order_id\": \"ord_mJH2hKOSYb3514\",        \"bank_code\": \"MANDIRI\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000\"    }}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/charge")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/payments/charge',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{    "type": "VA",    "request": {        "order_id": "ord_mJH2hKOSYb3514",        "bank_code": "MANDIRI",        "name": "Name Appear in ATM",        "amount": "20000"    }}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/charge")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{    \"type\": \"VA\",    \"request\": {        \"order_id\": \"ord_mJH2hKOSYb3514\",        \"bank_code\": \"MANDIRI\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000\"    }}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+**Response for VA**
+
+```js
+{
+  "type": "VA",
+  "response": {
+    "payment_id": "pay_XUwAkgIoru9966",
+    "order_id": "ord_Zwcd3aNiZR5608",
+    "account_number": "889089999561424",
+    "expiration_time": "2021-05-01T15:12:14.437734082Z",
+    "paid_amount": "1000.00",
+    "metadata": {}
+  }
+}
+```
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+## E-Wallet
+
+**Request Payload**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _type_ |	`mandatory` |	`string` `"EWALLET"` |
+| _request_ |	`mandatory` |	`object` The payload object depending on the payment type |
+
+**Request object**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _order_id_ |	`mandatory` |	`string` The id returned from create order api |
+| _mobile_ |	`mandatory` |	`string` Mobile number linked to the wallet |
+| _amount_ |	`mandatory` |	`string` Payment amount |
+| _wallet_type_ |	`mandatory` |	`string` Wallet type.  |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example Request for E-Wallet**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/payments/charge \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+  "type": "EWALLET",
+  "request": {
+      "order_id": "ord_mJH2hKOSYb3514",
+      "amount": "20000.00",
+      "mobile": "08123456789",
+      "wallet_type": "DANA"
+  }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{  \"type\": \"EWALLET\",  \"request\": {      \"order_id\": \"ord_mJH2hKOSYb3514\",      \"amount\": \"20000.00\",      \"mobile\": \"08123456789\",      \"wallet_type\": \"DANA\"  }}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/payments/charge", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{  \"type\": \"EWALLET\",  \"request\": {      \"order_id\": \"ord_mJH2hKOSYb3514\",      \"amount\": \"20000.00\",      \"mobile\": \"08123456789\",      \"wallet_type\": \"DANA\"  }}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/charge")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/payments/charge',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{  "type": "EWALLET",  "request": {      "order_id": "ord_mJH2hKOSYb3514",      "amount": "20000.00",      "mobile": "08123456789",      "wallet_type": "DANA"  }}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/charge")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{  \"type\": \"EWALLET\",  \"request\": {      \"order_id\": \"ord_mJH2hKOSYb3514\",      \"amount\": \"20000.00\",      \"mobile\": \"08123456789\",      \"wallet_type\": \"DANA\"  }}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+**Example Response for E-Wallet**
+
+```js
+{
+  "type": "EWALLET",
+  "response": {
+    "payment_id": "pay_dAM0lqkVuk0074",
+    "order_id": "ord_TVZ6EYuBJ85268",
+    "mobile": "08123123123",
+    "status": "processing",
+    "expiration_time": "2021-04-02T15:08:57.800297779Z",
+    "checkout_url": "https://link.to/ewallet-checkout-url",
+    "paid_amount": "1000.00",
+    "metadata": {}
+  }
+}
+```
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+## Retail Store
+
+**Request Payload**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _type_ |	`mandatory` |	`string` `"RETAILSTORE"` |
+| _request_ |	`mandatory` |	`object` The payload object depending on the payment type |
+
+**Request object**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _order_id_ |	`mandatory` |	`string` The id returned from create order api |
+| _bank_code_ |	`mandatory` |	`string`  Available values: `ALFAMART`, `INDOMARET` |
+| _name_ |	`mandatory` |	`string` Name that should appear in ATM |
+| _amount_ |	`mandatory` |	`string` Payment amount |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example Request for RETAILSTORE**
+
+`bank_code` can be `ALFAMART` or `INDOMARET`.
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/payments/charge \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "type": "RETAILSTORE",
+    "request": {
+        "order_id": "ord_mJH2hKOSYb3514",
+        "bank_code": "ALFAMART",
+        "name": "Name Appear in ATM",
+        "amount": "20000.00"
+    }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{    \"type\": \"RETAILSTORE\",    \"request\": {        \"order_id\": \"ord_mJH2hKOSYb3514\",        \"bank_code\": \"ALFAMART\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000.00\"    }}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/payments/charge", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{    \"type\": \"RETAILSTORE\",    \"request\": {        \"order_id\": \"ord_mJH2hKOSYb3514\",        \"bank_code\": \"ALFAMART\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000.00\"    }}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/charge")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/payments/charge',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{    "type": "RETAILSTORE",    "request": {        "order_id": "ord_mJH2hKOSYb3514",        "bank_code": "ALFAMART",        "name": "Name Appear in ATM",        "amount": "20000.00"    }}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/charge")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{    \"type\": \"RETAILSTORE\",    \"request\": {        \"order_id\": \"ord_mJH2hKOSYb3514\",        \"bank_code\": \"ALFAMART\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000.00\"    }}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+**Response for RETAILSTORE**
+
+```js
+{
+  "type": "RETAILSTORE",
+  "response": {
+    "payment_id": "pay_XUwAkgIoru9966",
+    "order_id": "ord_Zwcd3aNiZR5608",
+    "account_number": "889089999561424",
+    "expiration_time": "2021-05-01T15:12:14.437734082Z",
+    "paid_amount": "1000.00",
+    "metadata": {}
+  }
+}
+```
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+## ONLINE BANKING
+
+**Request Payload**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _type_ |	`mandatory` |	`string` `"ONLINE_BANKING"` |
+| _request_ |	`mandatory` |	`object` The payload object depending on the payment type |
+
+**Request object**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _order_id_ |	`mandatory` |	`string` The id returned from create order api |
+| _type_ |	`mandatory` |	`string`  Available values: `JENIUSPAY` |
+| _name_ |	`mandatory` |	`string` Name |
+| _mobile_ |	`mandatory` |	`string` Mobile |
+| _amount_ |	`mandatory` |	`string` Payment amount |
+| _customer_info_ |	`optional` |	`string` Customer Info |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example Request for JENIUSPAY**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/payments/charge \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "type": "ONLINE_BANKING",
+    "request": {
+        "order_id": "ord_mJH2hKOSYb3514",
+        "type": "JENIUSPAY",
+        "name": "Name Appear in ATM",
+        "amount": "20000.00",
+    "customer_info": {
+      "email": "jude_kasper@koss.in",
+      "given_name": "Jude Kasper",
+      "id": "cus_aGn5UD0m7F0994"
+    },
+    "mobile": "+6285722173217"
+    }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{    \"type\": \"ONLINE_BANKING\",    \"request\": {        \"order_id\": \"ord_mJH2hKOSYb3514\",        \"type\": \"JENIUSPAY\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000.00\",    \"customer_info\": {      \"email\": \"jude_kasper@koss.in\",      \"given_name\": \"Jude Kasper\",      \"id\": \"cus_aGn5UD0m7F0994\"    },    \"mobile\": \"+6285722173217\"    }}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/payments/charge", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{    \"type\": \"ONLINE_BANKING\",    \"request\": {        \"order_id\": \"ord_mJH2hKOSYb3514\",        \"type\": \"JENIUSPAY\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000.00\",    \"customer_info\": {      \"email\": \"jude_kasper@koss.in\",      \"given_name\": \"Jude Kasper\",      \"id\": \"cus_aGn5UD0m7F0994\"    },    \"mobile\": \"+6285722173217\"    }}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/charge")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/payments/charge',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{    "type": "ONLINE_BANKING",    "request": {        "order_id": "ord_mJH2hKOSYb3514",        "type": "JENIUSPAY",        "name": "Name Appear in ATM",        "amount": "20000.00",    "customer_info": {      "email": "jude_kasper@koss.in",      "given_name": "Jude Kasper",      "id": "cus_aGn5UD0m7F0994"    },    "mobile": "+6285722173217"    }}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/charge")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{    \"type\": \"ONLINE_BANKING\",    \"request\": {        \"order_id\": \"ord_mJH2hKOSYb3514\",        \"type\": \"JENIUSPAY\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000.00\",    \"customer_info\": {      \"email\": \"jude_kasper@koss.in\",      \"given_name\": \"Jude Kasper\",      \"id\": \"cus_aGn5UD0m7F0994\"    },    \"mobile\": \"+6285722173217\"    }}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+**Response for ONLINE_BANKING**
+
+```js
+{
+  "type": "ONLINE_BANKING",
+  "response": {
+    "expiration_time": "2021-08-25T04:54:02.512309995Z",
+    "metadata": {},
+    "mobile": "+6285722173217",
+    "order_id": "ord_QKglAxhyXs7798",
+    "paid_amount": "925002.00",
+    "payment_id": "pay_LbsD6MZmbn0052",
+    "status": "processing",
+    "unique_id": "JENIUSPAY",
+    "web_url": "https://test-url.com"
+  }
+}
+```
+
+Note: web_url is the redirect url which merchant should open to move on to the Jenius pay payment confirmation page.
+
+Note: the minimum amount needed for transaction using JENIUSPAY is Rp. 10000 and you will be provided with a external redirect url to complete the payment. `order_id`, `type`, `amount` and `mobile` are mandatory fields.
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+## BCA Aggregator
+
+**Example Request for BCA Aggregator**
+
+Merchant need to have neither BCA Bank account nor BCA approval - while merchant will be able to go live very quickly with Aggregator account.
+
+</div>
+
+<div class = 'right-code'>
+
+**Example Request for BCA Aggregator**
+
+<MultiCodeBlock>
+
+```bash
+# for BCA VA
+curl -X POST \
+  https://api.durianpay.id/v1/payments/charge \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "type": "VA",
+    "request": {
+        "order_id": "ord_WqiDi4ffuQ6751",
+        "bank_code": "BCA",
+        "name": "Name Appear in ATM",
+        "amount": "20000.00",
+    "customer_info": {
+      "email": "jude_kasper@koss.in",
+      "given_name": "Jude Kasper",
+      "id": "cus_aGn5UD0m7F0994"
+    }
+    }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{    \"type\": \"VA\",    \"request\": {        \"order_id\": \"ord_WqiDi4ffuQ6751\",        \"bank_code\": \"BCA\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000.00\",    \"customer_info\": {      \"email\": \"jude_kasper@koss.in\",      \"given_name\": \"Jude Kasper\",      \"id\": \"cus_aGn5UD0m7F0994\"    }    }}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/payments/charge", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{    \"type\": \"VA\",    \"request\": {        \"order_id\": \"ord_WqiDi4ffuQ6751\",        \"bank_code\": \"BCA\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000.00\",    \"customer_info\": {      \"email\": \"jude_kasper@koss.in\",      \"given_name\": \"Jude Kasper\",      \"id\": \"cus_aGn5UD0m7F0994\"    }    }}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/charge")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/payments/charge',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{    "type": "VA",    "request": {        "order_id": "ord_WqiDi4ffuQ6751",        "bank_code": "BCA",        "name": "Name Appear in ATM",        "amount": "20000.00",    "customer_info": {      "email": "jude_kasper@koss.in",      "given_name": "Jude Kasper",      "id": "cus_aGn5UD0m7F0994"    }    }}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/charge")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{    \"type\": \"VA\",    \"request\": {        \"order_id\": \"ord_WqiDi4ffuQ6751\",        \"bank_code\": \"BCA\",        \"name\": \"Name Appear in ATM\",        \"amount\": \"20000.00\",    \"customer_info\": {      \"email\": \"jude_kasper@koss.in\",      \"given_name\": \"Jude Kasper\",      \"id\": \"cus_aGn5UD0m7F0994\"    }    }}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+Please note that the minimum amount needed for transaction using BCA Aggregator is Rp. 10.000 NOTE: `order_id`, `type`, `amount`, `bank_code` (BCA) are mandatory fields.
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+**Response for VA Aggregator**
+
+```js
+{
+  "type": "VA",
+  "response": {
+      "account_number": "1900800000003154",
+      "expiration_time": "2021-08-25T04:47:03.258854515Z",
+      "metadata": {},
+      "order_id": "ord_PDZ1PzH5Iv3914",
+      "paid_amount": "925002.00"
+  }
+}
+```
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+## QRIS
+
+**Request Payload**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _type_ |	`mandatory` |	`string` `"QRIS"` |
+| _request_ |	`mandatory` |	`object` The payload object depending on the payment type |
+
+**Request object**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _order_id_ |	`mandatory` |	`string` The id returned from create order api |
+| _type_ |	`mandatory` |	`string`  Available values: `QRIS` |
+| _name_ |	`mandatory` |	`string` Name |
+| _amount_ |	`mandatory` |	`string` Payment amount |
+
+</div>
+
+<div class = 'right-code'>
+
+Please note that the maximum limit for QRIS is 5.000.000 IDR and minimum limit is 1.500 IDR
+
+**Example Request for QRIS**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/payments/charge \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "type": "QRIS",
+    "request": {
+        "amount": "80001.00",
+        "order_id": "ord_ZSHipeBgUd4740",
+        "name": "Name Appear in ATM",
+        "type": "QRIS"
+    }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{    \"type\": \"QRIS\",    \"request\": {        \"amount\": \"80001.00\",        \"order_id\": \"ord_ZSHipeBgUd4740\",        \"name\": \"Name Appear in ATM\",        \"type\": \"QRIS\"    }}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/payments/charge", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{    \"type\": \"QRIS\",    \"request\": {        \"amount\": \"80001.00\",        \"order_id\": \"ord_ZSHipeBgUd4740\",        \"name\": \"Name Appear in ATM\",        \"type\": \"QRIS\"    }}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/charge")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/payments/charge',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{    "type": "QRIS",    "request": {        "amount": "80001.00",        "order_id": "ord_ZSHipeBgUd4740",        "name": "Name Appear in ATM",        "type": "QRIS"    }}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/charge")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{    \"type\": \"QRIS\",    \"request\": {        \"amount\": \"80001.00\",        \"order_id\": \"ord_ZSHipeBgUd4740\",        \"name\": \"Name Appear in ATM\",        \"type\": \"QRIS\"    }}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+**Response for QRIS**
+
+```js
+{
+  "type": "QRIS",
+  "response": {
+    "payment_id": "pay_s2sSBlDSWv4167",
+    "order_id": "ord_QETgbs2UGL3100",
+    "status": "processing",
+    "expiration_time": "2021-09-15T15:44:37Z",
+    "creation_time": "2021-09-12T15:44:37ZZ",
+    "qr_string": "data:image/png;base64, long_qr_string",
+    "unique_id": "QRIS",
+    "metadata":{
+      "merchant_name": "Durianpay",
+      "merchant_id" : "sample_national_merchant_id" 
+    },
+    "amount": "80001.00",
+    "qr_code": "00020101021226590013ID.CO.BNI.WWW011893600009150002286002092107061320303UME51470015ID.OR.GPNQR.WWW0217ID2107271315771960303UME520454995303360540880001.005802ID5905Ajesh6013JAKARTA PUSAT6105101406214011038291492856304E1F"
+  }
+ }
+ ```
+
+ </div>
+
+ </div>
+
+ <div class = 'full-side'>
+
+ <div class = 'left-side'>
+
+### Sandbox Mode
+To simulate the charge API flow in sandbox mode, merchants can use dp_test_XXXXXXXXX key. By default we will simulate the success scenario. If you want to simulate the failure scenario, you should use the sandbox_options json field in the request. This contains force_fail and delay_ms fields.
+
+| Field |	Description |
+| ------ | ------------ |
+| _force_fail_ |	`bool` Make this field as true in the request if you want to simulate failure scenario. |
+| _delay_ms_ |	`integer` If you want to simulate a delay in making the payment as success or failed, give a value in milliseconds in this field in the request. |
+
+>Note: Currently sandbox_options is supported for VA, E-Wallet and RetailStore.
+ 
+</div>
+
+<div class = 'right-code'>
+
+**Example request for charge API in sandbox**
+
+<MultiCodeBlock>
+
+```bash
+curl
+-X POST https://api.durianpay.id/v1/payments/charge \
+-H "content-type: application/json" \
+-H "authorization: [Base64({Your_Server_Key}:)]" \
+-d '{
+    "type": "VA",
+    "request": {
+        "order_id": "ord_aiFBiqVWwk8596",
+        "amount": "925002.00",
+        "bank_code": "BCA",
+        "name": "Bauch Leannon and Donnelly Jude Casper",
+        "save_preferences": true,
+        "address_id": 4028,
+        "customer_info": {
+            "id": "cus_lqbboIkqI80314",
+            "given_name": "Jude Casper",
+            "email": "jude.casper@testmail.com",
+            "mobile": "+6285722173250"
+        }
+    },
+    "sandbox_options": {
+        "force_fail": true,
+        "delay_ms": 10000
+    }
+}'
+```
+
+```python
+import http.client
+conn = http.client.HTTPSConnection("api.durianpay.id")
+payload = "{\n    \"type\": \"VA\",\n    \"request\": {\n        \"order_id\": \"ord_aiFBiqVWwk8596\",\n        \"amount\": \"925002.00\",\n        \"bank_code\": \"BCA\",\n        \"name\": \"Bauch Leannon and Donnelly Jude Casper\",\n        \"save_preferences\": true,\n        \"address_id\": 4028,\n        \"customer_info\": {\n            \"id\": \"cus_lqbboIkqI80314\",\n            \"given_name\": \"Jude Casper\",\n            \"email\": \"jude.casper@testmail.com\",\n            \"mobile\": \"+6285722173250\"\n        }\n    },\n    \"sandbox_options\": {\n        \"force_fail\": true,\n        \"delay_ms\": 10000\n    }\n}"
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+conn.request("POST", "/v1/payments/charge", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{\n    \"type\": \"VA\",\n    \"request\": {\n        \"order_id\": \"ord_aiFBiqVWwk8596\",\n        \"amount\": \"925002.00\",\n        \"bank_code\": \"BCA\",\n        \"name\": \"Bauch Leannon and Donnelly Jude Casper\",\n        \"save_preferences\": true,\n        \"address_id\": 4028,\n        \"customer_info\": {\n            \"id\": \"cus_lqbboIkqI80314\",\n            \"given_name\": \"Jude Casper\",\n            \"email\": \"jude.casper@testmail.com\",\n            \"mobile\": \"+6285722173250\"\n        }\n    },\n    \"sandbox_options\": {\n        \"force_fail\": true,\n        \"delay_ms\": 10000\n    }\n}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/charge")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+Response response = client.newCall(request).execute();
+```
+
+```js
+import http.client
+conn = http.client.HTTPSConnection("api.durianpay.id")
+payload = "{\n    \"type\": \"VA\",\n    \"request\": {\n        \"order_id\": \"ord_aiFBiqVWwk8596\",\n        \"amount\": \"925002.00\",\n        \"bank_code\": \"BCA\",\n        \"name\": \"Bauch Leannon and Donnelly Jude Casper\",\n        \"save_preferences\": true,\n        \"address_id\": 4028,\n        \"customer_info\": {\n            \"id\": \"cus_lqbboIkqI80314\",\n            \"given_name\": \"Jude Casper\",\n            \"email\": \"jude.casper@testmail.com\",\n            \"mobile\": \"+6285722173250\"\n        }\n    },\n    \"sandbox_options\": {\n        \"force_fail\": true,\n        \"delay_ms\": 10000\n    }\n}"
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+conn.request("POST", "/v1/payments/charge", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+url = URI("https://api.durianpay.id/v1/payments/charge")
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{\n    \"type\": \"VA\",\n    \"request\": {\n        \"order_id\": \"ord_aiFBiqVWwk8596\",\n        \"amount\": \"925002.00\",\n        \"bank_code\": \"BCA\",\n        \"name\": \"Bauch Leannon and Donnelly Jude Casper\",\n        \"save_preferences\": true,\n        \"address_id\": 4028,\n        \"customer_info\": {\n            \"id\": \"cus_lqbboIkqI80314\",\n            \"given_name\": \"Jude Casper\",\n            \"email\": \"jude.casper@testmail.com\",\n            \"mobile\": \"+6285722173250\"\n        }\n    },\n    \"sandbox_options\": {\n        \"force_fail\": true,\n        \"delay_ms\": 10000\n    }\n}"
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+**Example response for sandbox.**
+
+```js
+{
+    "data": {
+        "type": "VA",
+        "response": {
+            "payment_id": "pay_lZqgqy5mQz0234",
+            "order_id": "ord_aiFBiqVWwk8596",
+            "account_number": "1111111111",
+            "expiration_time": "2022-01-11T09:01:18.083714Z",
+            "paid_amount": ""
+        }
+    }
+}
+```
+
+</div>
+
+</div>

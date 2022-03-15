@@ -1,0 +1,116 @@
+---
+title: Delete disbursement API
+description: 
+---
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+The following endpoint retrieves the balance in the durianpay account.
+
+<url delete = ""><div class = "ib">/disbursements/:id</div></url>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -u [Base64({Your_Server_Key}:)] \
+-X DELETE https://api.durianpay.id/v1/disbursements/dis_XXXXX \
+-H "content-type: application/json"'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("DELETE", "/v1/disbursements/dis_h73BiiJVS42949", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/disbursements/dis_h73BiiJVS42949")
+  .delete(null)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'DELETE',
+  url: 'https://api.durianpay.id/v1/disbursements/dis_h73BiiJVS42949',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/disbursements/dis_h73BiiJVS42949")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Delete.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": "Deleted Successfully"
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "error deleting disbursement batch"
+}
+```
+
+</div>

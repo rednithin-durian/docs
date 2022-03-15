@@ -1,0 +1,183 @@
+---
+title: Validate API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint can be used to fetch the bank account and account number validation:
+
+<url post = ""><div class = "ib">/disbursements/validate</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request Parameters**
+
+| Field |	is required? |	Description |
+| ----- | --------------- | ------------- |
+| _account_number_ |	`mandatory` | `string` The account number associated with the bank |
+| _bank_code_ |	`mandatory` |	`string` The bank code. Please refer here to fetch bank details |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/disbursements/validate \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "account_number": "123456789",
+    "bank_code": "bca"
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{\"account_number\": \"123456789\",\n    \"bank_code\": \"bca\"\n}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/disbursements/validate", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{\n    \"account_number\": \"123456789\",\n    \"bank_code\": \"bca\"\n}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/disbursements/validate")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/disbursements/validate',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{\n    "account_number": "123456789",\n    "bank_code": "bca"\n}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/disbursements/validate")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{\n    \"account_number\": \"123456789\",\n    \"bank_code\": \"bca\"\n}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+**Response Examples**
+
+
+```js
+//valid response status
+{
+    "data": {
+        "account_number": "12383830",
+        "bank_code": "bca",
+        "account_holder": "Dummy Name",
+        "status": "valid"
+    }
+}
+
+//invalid response status
+{
+    "data": {
+        "account_number": "12383831",
+        "bank_code": "bca",
+        "account_holder": "Dummy Name",
+        "status": "invalid"
+    }
+}
+```
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+## API Usage
+
+Please note the above endpoint takes some time to evaluate the results. When it's under evaluation it will return the status as processing.
+
+</div>
+
+<div class = 'right-code'>
+
+**Response Example**
+
+```js
+{
+    "data": {
+        "account_number": "123737383830",
+        "bank_code": "bca",
+        "account_holder": "",
+        "status": "processing"
+    }
+}
+```
+
+</div>
+
+</div>

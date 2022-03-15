@@ -1,0 +1,28 @@
+---
+title: API Introduction
+description: 
+---
+
+<div class = 'pl-20 pr-20'>
+
+import DocsetMenu from './components/docset-menu';
+import { MenuWrapper } from './components/menu';
+import WorkoutMenuItem from './components/workout-menu-item';
+import { Button } from '@apollo/space-kit/Button';
+import { IconRobot1 } from '@apollo/space-kit/icons/IconRobot1';
+import { Link } from 'gatsby';
+import { colors } from 'gatsby-theme-apollo-core';
+import { ExpansionPanel } from 'gatsby-theme-apollo-docs/src/components/expansion-panel';
+import { Divider } from 'theme-ui';
+
+Durianpay APIs allow you to build customized and unique payment experiences for your website, application or service. Our goal is to give you access to pretty much all the necessary resources to integrate payments into your platform. Durianpay APIs are completely RESTful and all our responses are returned in JSON.
+
+The API implements a Representational state transfer (REST) architecture. Sounds technical, but it’s really quite easy. It mainly breaks down to HTTP-methods `GET`, `PATCH`, `POST` and `DELETE` matching the operations to read, update, create and delete.
+
+You can use Durianpay APIs in two modes, `Sandbox` and `Live`. The API keys are different for each mode. Please refer to the Generate API Key section below for more details.
+
+## API Gateway URL
+
+The Durianpay API gateway URL is `https://api.durianpay.id/v1.` You need to include this before each API endpoint to make API calls correctly.
+
+</div>

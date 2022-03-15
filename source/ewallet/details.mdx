@@ -1,0 +1,177 @@
+---
+title: EWallet Account Details API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs'
+
+## Details EWallet Account
+
+The following endpoint gets Gopay Account Details:
+
+<url get = ""><div class = "ib">/ewallet/account?mobile="88888888888"?wallet_type="GOPAY"</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request parameters**
+
+Following are the parameters to be sent in the url query param :
+
+| Field |	is required? |	Description |
+| ------ | ---------------- | ------------- |
+| _mobile_ | 	`mandatory` |	`string` The mobile you use for e-wallet account |
+| _wallet_type_	 | `mandatory` |	`string` The wallet you use ex GOPAY |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -u [Base64({Your_Server_Key}:)] \ 
+-X GET 'https://api.durianpay.id/v1/ewallet/account?mobile=8888888888&wallet_type=GOPAY' \
+-H 'Is-live: true' \
+-H 'Content-Type: application/json' \
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+headers = {
+    'is-live': "true",
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    'cache-control': "no-cache",
+    'postman-token': "300d4685-961b-3f58-a3fe-b5e27970e602"
+    }
+
+conn.request("GET", "/v1/ewallet/account?mobile=8888888888&wallet_type=GOPAY", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/ewallet/account?mobile=8888888888&wallet_type=GOPAY")
+  .get()
+  .addHeader("is-live", "true")
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .addHeader("cache-control", "no-cache")
+  .addHeader("postman-token", "b98ce1a7-d128-8dcf-c733-147d8a8f67ce")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'GET',
+  url: 'https://api.durianpay.id/v1/ewallet/account',
+  qs: { mobile: '8888888888', wallet_type: 'GOPAY' },
+  headers: 
+   { 'postman-token': 'c7b991b9-b8d4-d6b1-3091-b322fd0b92a9',
+     'cache-control': 'no-cache',
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json',
+     'is-live': 'true' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/ewallet/account?mobile=8888888888&wallet_type=GOPAY")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Get.new(url)
+request["is-live"] = 'true'
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request["cache-control"] = 'no-cache'
+request["postman-token"] = 'b511f0e4-f72e-a20c-5351-6b52066a8054'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+
+#### Response Code : 200 Account Details Success
+
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "wallet_type": "GOPAY",
+        "ref_id": "7f125e70-095e-481d-8db8-241df9d5b86d",
+        "status": "enabled",
+        "mobile": "8888888888",
+        "balance": "8000000.00",
+        "currency": "IDR",
+        "token": "53c385d4-e279-495f-835a-d5ed089fe2cb"
+    }
+}
+```
+
+#### Error Response Code : 400
+
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "Mobile number is missing in request",
+    "error_code": "DPAY_INVALID_REQUEST"
+}
+```
+
+#### Error Response Code : 500
+
+Here is an example of error response
+
+```js
+{
+    "error": "Error in getting account details",
+    "error_code": "DPAY_INTERNAL_ERROR"
+}
+```
+
+</div>

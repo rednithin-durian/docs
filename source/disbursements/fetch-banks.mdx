@@ -1,0 +1,143 @@
+---
+title: Fetch bank list
+description: 
+---
+
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint retrieves the list of banks
+
+<url get = ""><div class = "ib">/disbursements/banks</div></url>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X GET \
+  https://api.durianpay.id/v1/disbursements/banks \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+```
+
+```python
+import requests
+
+url = "https://api.durianpay.id/v1/disbursements/banks"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+response = requests.request("GET", url, headers=headers)
+
+print(response.text)
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/disbursements/banks")
+  .get()
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'GET',
+  url: 'https://api.durianpay.id/v1/disbursements/banks',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/disbursements/banks")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Get.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "BCA",
+            "code": "BCA",
+            "instruction": {},
+            "type": "disbursement",
+            "created_at": "2021-03-18T09:51:13.13246Z",
+            "updated_at": "2021-03-18T09:51:13.13246Z"
+        },
+        {
+            "id": 2,
+            "name": "MANDIRI",
+            "code": "MANDIRI",
+            "instruction": {},
+            "type": "disbursement",
+            "created_at": "2021-03-18T09:51:13.13246Z",
+            "updated_at": "2021-03-18T09:51:13.13246Z"
+        },
+        {
+            "id": 3,
+            "name": "BNI",
+            "code": "BNI",
+            "instruction": {},
+            "type": "disbursement",
+            "created_at": "2021-03-18T09:51:13.13246Z",
+            "updated_at": "2021-03-18T09:51:13.13246Z"
+        }
+    ]
+}
+```
+
+#### Error Response Code : 401
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "invalid Authorization header in request"
+}
+```
+
+</div>

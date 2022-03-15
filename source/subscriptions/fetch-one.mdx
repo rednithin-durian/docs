@@ -1,0 +1,160 @@
+---
+title: Subscription Fetch by ID API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint retrieves the details of a single Subscription
+
+<url get = ""><div class = 'ib'>/subscriptions/:id</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Path parameters**
+
+| Field |	is required? |	Description |
+| ------ | -------------- | --------------- |
+| _id_ | 	`mandatory` |	`string` Unique identifier of the Subscription to be retrieved |
+
+**Query parameters**
+
+| Field |	is required? |	Description |
+| ------- | ------------- | ------------- |
+| _expand_ |	`optional` |	`string` Used to retrieve additional information about the Subscription. Supported values are: `customer`,`order`. Example: `/subscriptions/sub_jrmFNNJu5F99?expand=order&expand=customer` |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -u [Base64({Your_Server_Key}:)] \
+-X DELETE https://api.durianpay.id/v1/subscriptions/sub_jrmFNNJu5F9959 \
+-H "content-type: application/json"'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("GET", "/v1/subscriptions/sub_Li3eOY0q8Z6569", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/subscriptions/sub_Li3eOY0q8Z6569")
+  .get()
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'GET',
+  url: 'https://api.durianpay.id/v1/subscriptions/sub_Li3eOY0q8Z6569',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/subscriptions/sub_Li3eOY0q8Z6569")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Get.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "id": "sub_vUoR0w6c6j3912",
+        "plan": {
+            "id": "sub_plan_WdFvTrtP5Z6646",
+            "name": "Plan/Package Name",
+            "billing_period": "daily",
+            "billing_period_count": 1,
+            "grace_period": "annually",
+            "grace_period_count": 24,
+            "price": "20000.00",
+            "subscription_ref_id": "merchant_sub_ref_id"
+        },
+        "charge_type": "manual",
+        "status": "expired",
+        "started_at": "2021-09-30T12:58:38.210535Z",
+        "next_due_date": "2021-09-29T12:58:38.210535Z",
+        "billing_cycle_count": 10,
+        "amount": "40000.00",
+        "active_order_id": "",
+        "link": "https://links.durianpay.id/subscription-link/n7Hmh8"
+    }
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "error getting order"
+}
+```
+
+</div>

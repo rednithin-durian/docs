@@ -1,0 +1,136 @@
+---
+title: Delete Promo API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint deletes a promo
+
+<url delete = ""><div class = "ib">/merchants/promos/:id</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Path parameters**
+
+| Field |	is required? |	Description |
+| ----- | --------------- | ------------- |
+| _id_ |	`mandatory` |	`integer` Unique identifier of the Promo to be deleted |
+
+</div>
+
+<div class = 'right-code'>
+
+<MultiCodeBlock>
+
+**Example**
+
+```bash
+curl -X DELETE \
+  https://api.durianpay.id/v1/merchants/promos/prm_vnvN2Rp1tU7753 \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("DELETE", "/v1/merchants/promos/prm_vnvN2Rp1tU7753", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/merchants/promos/prm_vnvN2Rp1tU7753")
+  .delete(null)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'DELETE',
+  url: 'https://api.durianpay.id/v1/merchants/promos/prm_vnvN2Rp1tU7753',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/merchants/promos/prm_vnvN2Rp1tU7753")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Delete.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "message": "Promo deleted successfully"
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "error deleting promo"
+}
+```
+
+</div>

@@ -1,0 +1,204 @@
+---
+title: Submit Disbursement API
+description:
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+## Submit a disbursement
+The following endpoint submit a disbursement:
+
+<url post = ""><div class = "ib">/disbursements/submit</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Path parameters**
+
+| Field |	is required? |	Description |	Default Value |
+| ----- | -------------- | -------------- | ------------------ |
+| _force_disburse_ |	`optional` |	`bool` If this parameter is true then the batch will be validated and disbursed. In this case, approve API doesn't need to be called. |	`false` |
+| _skip_validation_ |	`optional` |	`bool` If this parameter is true then the bank validation will be skipped and items will be disbursed directly. |	`false` |
+
+**Request parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? |	Description |
+| ------ | -------------- | ----------- |
+| _name_ |	`mandatory` |	`string` | The name given for the disbursement batch to be submitted. |
+| _description_ |	`mandatory` |	`string` The description for the disbursement batch. |
+| _account_owner_name_ |	`mandatory` |	`string` The name of the bank account holder. |
+| _bank_code_ |	`mandatory` |	`string` The bank code of the account. |
+| _amount_ |	`mandatory` |	`string` The amount of money to be disbursed. |
+| _account_number_ |	`mandatory` |	`string` The account number of the recipient. |
+| _email_recipient_ |	`mandatory` |	`string` The email of the recipient. |
+| _phone_number_ |	`mandatory` | `string` The phone number of the recipient. |
+| _notes_ |	`optional` |	`string` The notes for the disbursement if any. |
+
+Following are the parameters to be sent in the request header:
+
+| Field |	is required? |	Description |
+| ----- | --------------- | ----------- |
+| _idempotency_key_ |	`mandatory` |	`string` The idempotency key used to submit the disbursement. It will be used to prevent accidentally creating the same disbursement more than once. |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -u [Base64({Your_Server_Key}:)] \
+-X POST https://api.durianpay.id/v1/disbursements/submit \
+-H "content-type: application/json" \
+-H "idempotency_key: <YOUR_IDEMPOTENCY_KEY>" \
+-d '{
+  "name": "sample disbursement",
+  "description": "this is a sample disbursement",
+  "items": [{
+      "account_owner_name": "Jane Doe",
+      "bank_code": "bca",
+      "amount": "10000",
+      "account_number": "8422647",
+      "email_recipient": "jane_doe@nomail.com",
+      "phone_number": "85722173217",
+      "notes": "salary"
+  },
+  {
+      "account_owner_name": "Jack",
+      "bank_code": "bca",
+      "amount": "10000",
+      "account_number": "235464",
+      "email_recipient": "jack@nomail.com",
+      "phone_number": "85609873209",
+      "notes": "salary"
+  }]
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{  \"name\": \"sample disbursement\",css  \"description\": \"this is a sample disbursement\",  \"items\": [{      \"account_owner_name\": \"Jane Doe\",      \"bank_code\": \"bca\",      \"amount\": \"10000\",      \"account_number\": \"8422647\",      \"email_recipient\": \"jane_doe@nomail.com\",      \"phone_number\": \"85722173217\",      \"notes\": \"salary\"  },  {      \"account_owner_name\": \"Jack\",      \"bank_code\": \"bca\",      \"amount\": \"10000\",      \"account_number\": \"235464\",      \"email_recipient\": \"jack@nomail.com\",      \"phone_number\": \"85609873209\",      \"notes\": \"salary\"  }]}"
+
+headers = {
+    'content-type': "application/json",
+    'idempotency_key': "<YOUR_IDEMPOTENCY_KEY>",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/disbursements/submit", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{  \"name\": \"sample disbursement\",  \"description\": \"this is a sample disbursement\",  \"items\": [{      \"account_owner_name\": \"Jane Doe\",      \"bank_code\": \"bca\",      \"amount\": \"10000\",      \"account_number\": \"8422647\",      \"email_recipient\": \"jane_doe@nomail.com\",      \"phone_number\": \"85722173217\",      \"notes\": \"salary\"  },  {      \"account_owner_name\": \"Jack\",      \"bank_code\": \"bca\",      \"amount\": \"10000\",      \"account_number\": \"235464\",      \"email_recipient\": \"jack@nomail.com\",      \"phone_number\": \"85609873209\",      \"notes\": \"salary\"  }]}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/disbursements/submit")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("idempotency_key", "<YOUR_IDEMPOTENCY_KEY>")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/disbursements/submit',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     idempotency_key: '<YOUR_IDEMPOTENCY_KEY>',
+     'content-type': 'application/json' },
+  body: '{  "name": "sample disbursement",  "description": "this is a sample disbursement",  "items": [{      "account_owner_name": "Jane Doe",      "bank_code": "bca",      "amount": "10000",      "account_number": "8422647",      "email_recipient": "jane_doe@nomail.com",      "phone_number": "85722173217",      "notes": "salary"  },  {      "account_owner_name": "Jack",      "bank_code": "bca",      "amount": "10000",      "account_number": "235464",      "email_recipient": "jack@nomail.com",      "phone_number": "85609873209",      "notes": "salary"  }]}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/disbursements/submit")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["idempotency_key"] = '<YOUR_IDEMPOTENCY_KEY>'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{  \"name\": \"sample disbursement\",  \"description\": \"this is a sample disbursement\",  \"items\": [{      \"account_owner_name\": \"Jane Doe\",      \"bank_code\": \"bca\",      \"amount\": \"10000\",      \"account_number\": \"8422647\",      \"email_recipient\": \"jane_doe@nomail.com\",      \"phone_number\": \"85722173217\",      \"notes\": \"salary\"  },  {      \"account_owner_name\": \"Jack\",      \"bank_code\": \"bca\",      \"amount\": \"10000\",      \"account_number\": \"235464\",      \"email_recipient\": \"jack@nomail.com\",      \"phone_number\": \"85609873209\",      \"notes\": \"salary\"  }]}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "id": "dis_LjxhDKq8Am3427",
+        "name": "test disb",
+        "total_amount": "20000.00",
+        "total_disbursements": 2,
+        "description": "description"
+    }
+}
+```
+
+#### Error Response Code : 400
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "required fields missing",
+    "errors": [
+        {
+            "field": "amount=\"amount invalid\"\n",
+            "message": "Please provide valid disbursement data"
+        }
+    ]
+}
+```
+
+</div>

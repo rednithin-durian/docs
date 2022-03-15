@@ -1,0 +1,180 @@
+---
+id: create
+title: Static VA Payment Simulate API
+sidebar_label: Static VA Payment Simulate API
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+
+The following endpoint to simulate a payment to a virtual account
+<url post=""><div class="ib">/payments/va/static/simulate</div></url>
+
+> This endpoint only works in sandbox mode using API Key which starts with `dp_test`
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+### Request parameters
+Following are the parameters to be sent in the request body:
+
+| Field             | is required? | Description      |   Example  | 
+| :---------------- | ------------ | ---------------- | ---------- |
+| *account_number* | `mandatory` | `string` the account number to which money should be sent | `1236170055`
+| *amount* | `mandatory` | `string` amount in `IDR` to be sent to account  | `12345.55`
+
+</div>
+
+<div class = 'right-code'>
+
+### Sample Request
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+https://api.durianpay.id/v1/payments/va/static/simulate \
+-H 'authorization: [Base64({Your_Server_Key}:)]' \
+-H "content-type: application/json" \
+-d '{
+  "account_number": "1236170055",
+  "amount": "12345.55"
+}'
+```
+'
+
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{ \"account_number\": \"1236170055\", \"amount\": \"12345.55\"}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/payments/va/static/simulate", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{ \"account_number\": \"1236170055\", \"amount\": \"12345.55\"}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/va/static/simulate")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/payments/va/static/simulate',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: "{ \"account_number\": \"1236170055\", \"amount\": \"12345.55\"}" };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/va/static/simulate")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{ \"account_number\": \"1236170055\", \"amount\": \"12345.55\"}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+### Sample Response
+
+The `status code` returned would be `200`.
+
+```json
+{
+    "data": {
+        "status": "Payment Successful"
+    }
+}
+```
+
+### Sample Error
+
+#### Form Errors
+
+Form errors are those which occur `during form validation` & contain an `errors array` and are thrown with status code `400`.
+
+```json
+{
+    "error_code": "DPAY_INVALID_REQUEST",
+    "request_id": "dp_JSN8xJULZ39583",
+    "errors": [
+        {
+            "field": "account_number",
+            "message": "can't be blank"
+        },
+        {
+            "field": "amount",
+            "message": "can't be blank"
+        }
+    ]
+}
+```
+
+#### Other Errors
+
+Other errors are `failures` which occur `after form validation`. The status codes codes are usually `422`.
+
+
+```json
+{
+    "data": {
+        "status": "Payment Unsuccessful",
+        "reason": "VA Not found"
+    }
+}
+```
+
+</div>
+
+</div>

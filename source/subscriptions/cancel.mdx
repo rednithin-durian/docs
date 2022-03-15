@@ -1,0 +1,141 @@
+---
+title: Subscription Cancel by ID API
+description:
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint cancels a single Subscription
+
+<url get = ''><div class = 'ib'>/subscriptions/:id/cancel</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Path parameters**
+
+| Field |	is required? |	Description |
+| ------ | -------------- | ------------ |
+| _id_ |	`mandatory` |	`string` Unique identifier of the Subscription to be cancelled |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -u [Base64({Your_Server_Key}:)] \
+-X DELETE https://api.durianpay.id/v1/subscriptions/sub_vUoR0w6c6j3912/cancel \
+-H "content-type: application/json"'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("DELETE", "/v1/subscriptions/sub_vXwhgHXhOu8899/cancel", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/subscriptions/sub_vXwhgHXhOu8899/cancel")
+  .delete(null)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'DELETE',
+  url: 'https://api.durianpay.id/v1/subscriptions/sub_vXwhgHXhOu8899/cancel',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/subscriptions/sub_vXwhgHXhOu8899/cancel")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Delete.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "id": "sub_vUoR0w6c6j3912",
+        "status": "expired",
+        "started_at": "2021-09-30T12:58:38.210535Z",
+        "cancelled_at": "2021-10-01T12:19:20.851102Z"
+    }
+}
+```
+
+#### Error Response Code : 404
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "subscription does not exists",
+    "error_code": "DPAY_INVALID_REQUEST"
+}
+```
+
+</div>

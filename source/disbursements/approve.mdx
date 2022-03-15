@@ -1,0 +1,152 @@
+---
+title: Approve Disbursement API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs'
+
+## Approve disbursement
+
+The following endpoint approves a disbursement:
+
+<url post = ""><div class = "ib">/disbursements/:id/approve</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Path parameters**
+
+| Field |	is required? |	Description |
+| ------ | --------------- | ------------ |
+| _id_ |	`mandatory` |	`string` Unique identifier of the disbursement to be approved. |
+
+**Query parameters**
+
+|Field |	default |	is required? |	Description |
+| ------- | -------- | ------------- | -------------- |
+| _ignore_invalid_ | 	`false` |	`optional` |	`boolean` If set to true, ignores the invalid batch items and disburse only the valid items. |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -u [Base64({Your_Server_Key}:)] \
+-X POST https://api.durianpay.id/v1/disbursements/dis_XXXXX/approve \
+-H "content-type: application/json" \
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/disbursements/dis_DW91xBpU7e1831/approve", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/disbursements/dis_DW91xBpU7e1831/approve")
+  .post(null)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/disbursements/dis_DW91xBpU7e1831/approve',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/disbursements/dis_DW91xBpU7e1831/approve")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "id": "dis_XXXX",
+        "name": "sample disbursement",
+        "type": "batch",
+        "status": "approved",
+        "total_amount": "10000.00",
+        "total_disbursements": 1,
+        "description": "this is a sample disbursement"
+    }
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "error getting disbursement",
+}
+```
+
+</div>
+

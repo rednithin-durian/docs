@@ -1,0 +1,183 @@
+---
+title: Fetch disbursement items by ID API
+description:
+---
+
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint retrieves the details of disbursement items created
+
+<url get = ""><div class = "ib">/disbursements/:id/items</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Path parameters**
+
+| Field |	is required? |	Description |
+| --------- | ----------- | ------------ |
+| _id_ |	`mandatory` |	`string` Unique identifier of the disbursement to be retrieved. |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -u [Base64({Your_Server_Key}:)] \
+-X GET https://api.durianpay.id/v1/disbursements/dis_XXXXXXX/items \
+-H "content-type: application/json"'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("GET", "/v1/disbursements/dis_Y0TOyHuVlY0073/items", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/disbursements/dis_Y0TOyHuVlY0073/items")
+  .get()
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'GET',
+  url: 'https://api.durianpay.id/v1/disbursements/dis_Y0TOyHuVlY0073/items',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/disbursements/dis_Y0TOyHuVlY0073/items")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Get.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div> 
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "submission_status": "completed",
+        "disbursement_batch_items": [
+            {
+                "id": "dis_item_XXXXX",
+                "disbursement_batch_id": "dis_XXXXX",
+                "account_owner_name": "John Doe",
+                "real_name": "Dummy Name",
+                "bank_code": "bca",
+                "amount": "10000.00",
+                "account_number": "8422647",
+                "email_recipient": "john@nomail.com",
+                "phone_number": "85609873209",
+                "invalid_fields": [
+                    {
+                        "key": "bank_code",
+                        "message": "Invalid BankCode/AccountNumber"
+                    },
+                    {
+                        "key": "account_number",
+                        "message": "Invalid BankCode/AccountNumber"
+                    }
+                ],
+                "status": "invalid",
+                "notes": "salary",
+                "is_deleted": false,
+                "created_at": "2021-05-03T13:54:28.842634Z",
+                "updated_at": "2021-05-03T13:54:28.842635Z"
+            },
+            {
+                "id": "dis_item_XXXXX",
+                "disbursement_batch_id": "dis_XXXXX",
+                "account_owner_name": "Jake",
+                "real_name": "Dummy Name",
+                "bank_code": "bca",
+                "amount": "10000.00",
+                "account_number": "235464",
+                "email_recipient": "jake@nomail.com",
+                "phone_number": "85609873209",
+                "status": "valid",
+                "notes": "salary",
+                "is_deleted": false,
+                "created_at": "2021-05-03T13:54:28.842637Z",
+                "updated_at": "2021-05-03T13:54:28.842637Z"
+            }
+        ],
+        "count": 2,
+    }
+}
+```
+
+#### Error Response Code : 401
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "invalid Authorization header in request"
+}
+```
+
+</div>

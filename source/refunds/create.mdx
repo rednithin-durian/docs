@@ -1,0 +1,170 @@
+---
+title: Create Refund API
+description:
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+## Create a Refund
+
+The following endpoint creates an Refund:
+
+<url post = ""><div class = "ib">/refunds</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? |	Description |	Example |
+| ----- | -------------- | ------------- | ------- |
+| _ref_id_ |	`mandatory` |	`string` The refund reference id |	`"ref_reference_123"` |
+| _customer_id_ |	`mandatory` |	`string` The customer id |	`"cust_0912jas123"` |
+| _payment_id_ |	`mandatory` |	`string` The payment it that what to make a refund |	`"pay_ttqs62k99s"` |
+| _amount_ |	`mandatory` |	`string` | The refund amount requested |	`"10000"` or `"10000.23"` for amount with decimal value |
+| _notes_ |	`optional` |	`string` The refund note |	`"rejected product"` |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/refunds \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "ref_id": "abc",
+    "customer_id": "cus_tZwN2O3tl04389",
+    "payment_id": "pay_IsL5nOCW4M2790",
+    "amount": "1500",
+    "notes": "rejected product"
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{\n    \"ref_id\": \"abc\",\n    \"customer_id\": \"cus_tZwN2O3tl04389\",\n    \"payment_id\": \"pay_IsL5nOCW4M2790\",\n    \"amount\": \"1500\",\n    \"notes\": \"rejected product\"\n}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/refunds", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{\n    \"ref_id\": \"abc\",\n    \"customer_id\": \"cus_tZwN2O3tl04389\",\n    \"payment_id\": \"pay_IsL5nOCW4M2790\",\n    \"amount\": \"1500\",\n    \"notes\": \"rejected product\"\n}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/refunds")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/refunds',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{\n    "ref_id": "abc",\n    "customer_id": "cus_tZwN2O3tl04389",\n    "payment_id": "pay_IsL5nOCW4M2790",\n    "amount": "1500",\n    "notes": "rejected product"\n}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/refunds")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{\n    \"ref_id\": \"abc\",\n    \"customer_id\": \"cus_tZwN2O3tl04389\",\n    \"payment_id\": \"pay_IsL5nOCW4M2790\",\n    \"amount\": \"1500\",\n    \"notes\": \"rejected product\"\n}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+  "data": {
+    "id": "rfn_qfrsL0tlnT0308",
+    "ref_id": "reference_1",
+    "amount": "20000.00",
+    "refund_type": "partial",
+    "status": "approved",
+    "created_at": "2021-07-20T10:43:42.201587Z",
+    "updated_at": "2021-07-20T10:43:42.401256Z",
+    "approved_at": "2021-07-20T10:43:42.401256Z",
+    "source": "api",
+    "customer_id": "cus_9eGU1Iwxeb8004",
+    "customer_name": "joe",
+    "customer_email": "jade@sfs.com",
+    "customer_phone": ""
+  }
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "error creating refund"
+}
+```
+
+</div>

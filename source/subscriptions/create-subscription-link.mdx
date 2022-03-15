@@ -1,0 +1,258 @@
+---
+title: Create Subscription Link API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+## Create a Subscription link
+
+The following endpoint creates a Subscription Link:
+
+<url post = ""><div class = 'ib'>/subscriptions</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? | 	Description |
+| ------ | -------------- | --------------- |
+| _subscription_ref_id_ |	`optional` |	`string` The subscription_ref_id is upstream id from merchant |
+| _name_ |	`mandatory` |	`string` The name associated with the Plan or Package Name |
+| _billing_period_ |	`optional` |	`string` The billing_period for subscription can be monthly/weekly/annually/daily, `default value is monthly` |
+| _billing_period_count_ |	`optional` |	`integer` The billing_period_count for subscription.For example, If billing_period is set for Monthly and billing_period_count is set as 2, then charge will be made every 2 months, `default value is 1` |
+| _grace_period_ |	`optional` |	`string` The grace_period for subscription can be terminate/ignore/monthly/hourly/weekly/daily. `default value is 24 hours` . `terminate` if the subscription was not paid after the due date, the subscription will end immediately And `ignore` if the subscription was not paid after the due date, the subscription will continue and status remain active.`Grace Period should be less than Billing period` |
+| _grace_period_count_ |	`optional` |	`integer` The grace_period for subscription has to be zero for grace_period terminate/ignore & non zero in case of grace_period as monthly/hourly/weekly/daily.for example, if grace_period is set for Monthly and grace_period_count is set as 2, then charge will be made every 2 months |
+| _price_ |	`mandatory` |	`string` The price for a single subscription plan |
+| _qty_ |	`mandatory` |	`string` The quantity of subscription plan, total amount will be price * qty |
+| _billing_cycle_count_ |	`optional` |	`integer` The billing_cycle_count refers number of cycle amount will be charged for fixed cycle. for forever subscription billing_cycle_count is zero `default 0` |
+| _started_at_ |	`mandatory` |	`string` The started_at associated with start date for subscription plan which should be current date or greater |
+| _charge_type_ |	`mandatory` |	`string` The charge_type can be manual or automatic (only available for credit card) |
+| _notes_ |	`optional` |	`string` The note from the merchant |
+| _email_ |	`mandatory` |	`string` The email refers to customer email |
+| _mobile_ |	`mandatory` |	`string` The mobile refers to customer mobile |
+| _given_name_ |	`mandatory` |	`string` The given_name refers to customer first name |
+| _middle_name_ |	`optional` |	`string` The middle_name refers to customer middle name |
+| _sur_name_ |	`optional` |	`string` The sur_name refers to customer last name |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/subscriptions \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{"plan": 
+      {
+        "subscription_ref_id": "merchant_sub_ref_id",
+        "name": "Plan/Package Name",
+        "billing_period": "monthly",
+        "billing_period_count": 1,
+        "grace_period": "terminate",
+        "grace_period_count": 0,
+        "price": "20000",
+        "qty": "2"
+      },
+      "customer": {
+        "email": "jude.casper@durianpay.id",
+        "mobile": "+628978678511",
+        "given_name": "Jude",
+        "middle_name": "",
+        "sur_name": "Casper"
+      },
+      "billing_cycle_count": 10,
+      "started_at": "2022-09-30T12:58:38.210535Z",
+      "charge_type": "manual",
+      "notes": "a long notes"
+  }'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{\"plan\":       {        \"subscription_ref_id\": \"merchant_sub_ref_id\",        \"name\": \"Plan/Package Name\",        \"billing_period\": \"monthly\",        \"billing_period_count\": 1,        \"grace_period\": \"terminate\",        \"grace_period_count\": 0,        \"price\": \"20000\",        \"qty\": \"2\"      },      \"customer\": {        \"email\": \"jude.casper@durianpay.id\",        \"mobile\": \"+628978678511\",        \"given_name\": \"Jude\",        \"middle_name\": \"\",        \"sur_name\": \"Casper\"      },      \"billing_cycle_count\": 10,      \"started_at\": \"2022-09-30T12:58:38.210535Z\",      \"charge_type\": \"manual\",      \"notes\": \"a long notes\"  }"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/subscriptions", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\"plan\":       {        \"subscription_ref_id\": \"merchant_sub_ref_id\",        \"name\": \"Plan/Package Name\",        \"billing_period\": \"monthly\",        \"billing_period_count\": 1,        \"grace_period\": \"terminate\",        \"grace_period_count\": 0,        \"price\": \"20000\",        \"qty\": \"2\"      },      \"customer\": {        \"email\": \"jude.casper@durianpay.id\",        \"mobile\": \"+628978678511\",        \"given_name\": \"Jude\",        \"middle_name\": \"\",        \"sur_name\": \"Casper\"      },      \"billing_cycle_count\": 10,      \"started_at\": \"2022-09-30T12:58:38.210535Z\",      \"charge_type\": \"manual\",      \"notes\": \"a long notes\"  }");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/subscriptions")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/subscriptions',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json',
+    },
+  body: 
+   { plan: 
+      { subscription_ref_id: 'merchant_sub_ref_id',
+        name: 'Plan/Package Name',
+        billing_period: 'monthly',
+        billing_period_count: 1,
+        grace_period: 'terminate',
+        grace_period_count: 0,
+        price: '20000',
+        qty: '2' },
+     customer: 
+      { email: 'jude.casper@durianpay.id',
+        mobile: '+628978678511',
+        given_name: 'Jude',
+        middle_name: '',
+        sur_name: 'Casper' },
+     billing_cycle_count: 10,
+     started_at: '2022-09-30T12:58:38.210535Z',
+     charge_type: 'manual',
+     notes: 'a long notes' },
+  json: true };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/subscriptions")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{\"plan\":       {        \"subscription_ref_id\": \"merchant_sub_ref_id\",        \"name\": \"Plan/Package Name\",        \"billing_period\": \"monthly\",        \"billing_period_count\": 1,        \"grace_period\": \"terminate\",        \"grace_period_count\": 0,        \"price\": \"20000\",        \"qty\": \"2\"      },      \"customer\": {        \"email\": \"jude.casper@durianpay.id\",        \"mobile\": \"+628978678511\",        \"given_name\": \"Jude\",        \"middle_name\": \"\",        \"sur_name\": \"Casper\"      },      \"billing_cycle_count\": 10,      \"started_at\": \"2022-09-30T12:58:38.210535Z\",      \"charge_type\": \"manual\",      \"notes\": \"a long notes\"  }"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "id": "sub_7HAtpFqE7g0944",
+        "plan": {
+            "id": "sub_plan_HQYXw2LQlz3333",
+            "name": "Plan/Package Name",
+            "billing_period": "monthly",
+            "billing_period_count": 1,
+            "grace_period": "terminate",
+            "grace_period_count": 0,
+            "price": "20000",
+            "qty": "2",
+            "amount": "40000.00",
+            "subscription_ref_id": "merchant_sub_ref_id"
+        },
+        "customer": {
+            "id": "cus_g0tw6z7sDF4506",
+            "email": "jude.casper@durianpay.i",
+            "mobile": "+628978678511",
+            "given_name": "Jude",
+            "middle_name": "",
+            "sur_name": "Casper"
+        },
+        "status": "wait_for_payment",
+        "started_at": "2021-10-01T12:58:38.210535Z",
+        "next_due_at": "2021-10-01T12:58:38.210535Z",
+        "subscription_orders": [
+            {
+                "billing_period": 1,
+                "order_id": "ord_A2xXH1YkMU7183",
+                "status": "unpaid"
+            }
+        ],
+        "charge_type": "manual",
+        "link": "https://links.durianpay.id/subscription-link/b6hRzb"
+    }
+}
+```
+
+**Error Response Code : 400**
+
+```js
+{
+    "error": "required fields missing",
+    "error_code": "DPAY_INVALID_REQUEST",
+    "errors": [
+        {
+            "field": "name=\"name invalid\"price=\"price invalid\"quantity=\"quantity invalid\"",
+            "message": "Please provide valid subscription data"
+        },
+        {
+            "field": "mobile=\"mobile invalid\"given_name=\"given_name invalid\"email=\"email invalid\"",
+            "message": "Please provide valid subscription customer data"
+        }
+    ]
+}
+```
+
+**Error Response Code : 500**
+
+```js
+{
+    "error": "error in creating subscription",
+    "error_code": "DPAY_INTERNAL_ERROR"
+}
+```
+
+</div>

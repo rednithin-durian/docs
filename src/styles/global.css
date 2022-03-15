@@ -1,0 +1,474 @@
+html{
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+@font-face {
+	font-family: "Apercu";
+	src: url("ApercuRegular400.otf");
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Muli";
+	src: url("Muli.ttf");
+	font-weight: 400;
+	font-style: normal;
+}
+
+body {
+	background-color: #fff;
+}
+
+blockquote {
+	background-color: #f1efff;
+}
+
+thead {
+	background-color: #f1efff;
+}
+
+h1, h2, h3, h4 {
+	font-family: 'Muli',-apple-system,'BlinkMacSystemFont','Segoe UI','Roboto','Helvetica Neue','Arial','Noto Sans',sans-serif;
+}
+h1 {
+	font-size: 2.0rem;
+	line-height: 2.8rem;
+	font-weight: 800;
+	background-image: linear-gradient(90deg,var(--theme-ui-colors-purple-60,#663399),var(--theme-ui-colors-magenta-50,#bc027f),var(--theme-ui-colors-orange-70,#f67300));
+    -webkit-background-clip: text;
+	background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+p, li {
+	font-size: 1.0rem;
+	line-height: 1.6rem;
+	font-family: 'Apercu', sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	color: rgb(78, 79, 82);
+	text-rendering: optimizelegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+aside {
+	background-color: #f5f5f5;
+	padding: 20px !important;
+}
+
+aside[class*="-Aside"] > ul > li {
+	font-size: 0.9rem;
+}
+
+.langSelectButton {
+	background-color: #fff;
+	border-radius: 4px;
+}
+
+.langSelectButton > button {
+	color: #725CF6;
+}
+
+.demo-btn {
+	background-color: #725CF6;
+	color: #fff;
+	padding: 10px 20px;
+	text-decoration: none;
+	border-radius: 4px;
+}
+
+.sidebar > div > div {
+	border-bottom: 1px dashed #ddd;
+}
+
+.sidebar li {
+	margin-bottom: 5px;
+}
+
+.sidebar li a {
+	width: 100%;
+	font-size: 0.9rem;
+}
+
+.sidebar div[class*="-CategoryTitle"] {
+	font-size: 13px;
+}
+
+.sidebar li[class*="-StyledListItem"] a.active {
+	background-color: #fff;
+}
+
+.header-elements {
+	margin-left: auto;
+	vertical-align: middle;
+	align-items: center;
+}
+
+.header-elements a {
+	color: #3f20ba;
+	text-decoration: none;
+	margin-left: 1rem;	
+	float: left;
+	vertical-align: middle;
+	align-items: center;
+}
+
+.header-elements .button {
+	background-color: #725CF6;
+	padding: 4px 10px;
+	border-radius: 4px;
+	color: #fff;
+}
+
+.gatsby-highlight pre[class*="language-"]{
+	 overflow-x: scroll;
+	 overflow-y: hidden;
+	 width: 100%;
+}
+
+.gatsby-highlight pre[class*="language-"]::-webkit-scrollbar {
+	height: 5px;
+  }
+  
+  /* Track */
+  .gatsby-highlight pre[class*="language-"]::-webkit-scrollbar-track {
+	background-color: transparent; 
+	border-radius: 10px;
+  }
+   
+  /* Handle */
+  .gatsby-highlight pre[class*="language-"]::-webkit-scrollbar-thumb {
+	background: grey; 
+	border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  .gatsby-highlight pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+	background: grey; 
+  }
+
+pre[class*="language-"], code[class*="language-"] {
+	font-size: 12px;
+
+}
+
+aside li {
+	color: rgb(100, 100, 100);
+}
+aside > li > a {
+	font-size: 0.2rem;
+} 
+aside li>a:hover {
+	color: #3f20ba;
+}
+
+aside li.active > a {
+	font-weight: normal;
+}
+
+blockquote > p, blockquote > ul, blockquote > ol {
+	font-size: 0.9rem;
+}
+
+blockquote > p:last-child, blockquote > ul:last-child, blockquote > ol:last-child {
+	color: #6f65aa;
+}
+
+td {
+	padding: 10px !important;
+}
+
+.gatsby-highlight > button {
+	background-color: #3f20ba;
+	border-radius: 4px;
+	color: #fff;
+}
+
+.screenshot {
+	width: 30%;
+	float: left;
+	margin-right: 1rem;
+}
+
+url {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	color: #4f5c5d;
+	font-size: 1.1em;
+	font-family: monospace;
+	margin: 6px 0 30px;
+	line-height: 24px;
+}
+url[patch]:before {
+	content: "PATCH";
+	background: #909296;
+}
+url[delete]:before {
+	content: "DELETE";
+	background: #eb927c;
+}
+url[post]:before {
+	content: "POST";
+	background: #6c9fff;
+}
+url[get]:before {
+	content: "GET";
+	background: #08ca73;
+}
+url[put]:before {
+	content: "PUT";
+	background: #909296;
+}
+
+url:before {
+	border-radius: 2px 0 0 2px;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: .3px;
+	color: #fff;
+	padding: 0 10px;
+	float: left;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+url[patch] .ib {
+	background: rgba(100, 101, 102, 0.1);
+	border-color: rgba(51, 52, 54, 0.6);
+}
+url[delete] .ib {
+	background: rgba(248, 152, 135, 0.1);
+	border-color: rgba(223, 124, 94, 0.6);
+}
+url[post] .ib {
+	background: rgba(108,159,255,0.1);
+	border-color: rgba(108,159,255,0.6);
+}
+url[get] .ib {
+	background: rgba(8,202,115,0.1);
+	border-color: rgba(8,202,115,0.6);
+}
+url[put] .ib {
+	background: rgba(8,202,115,0.1);
+	border-color: rgba(8,202,115,0.6);
+}
+url .ib {
+	word-break: break-all;
+	padding: 0 12px;
+	border-width: 1px;
+	border-style: solid;
+	line-height: 22px;
+	border-radius: 0 2px 2px 0;
+	border-left: 0;
+}
+
+.ib {
+	display: inline-block;
+}
+
+.left-side{
+	width: 60%;
+	padding: 0px 20px;
+}
+
+.right-code{
+	width: 40%;
+	float: right;
+	height: 100%;
+	z-index: 10;
+	padding-bottom: 4em;
+}
+
+.full-side{
+	display: flex;
+	height: 100%;
+	padding-top: 4em;
+	
+}
+
+.content-wrapper{
+	display: flex;
+	flex-direction: column;
+}
+
+.ml-60{
+	margin-left: 60%;
+}
+
+.header-wrapper{
+	width: 60%;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+main > div{
+	padding : 40px 0px 0px 0px !important;
+}
+
+main{
+	position: relative;
+}
+
+body > div > div > div{
+	margin: 0 !important;
+	max-width: 100% !important;
+}
+
+.right-component ~nav{
+	width: 60%;
+}
+nav{
+	padding: 50px 20px 30px 20px !important;
+}
+
+nav a {
+	padding-bottom: 20px;
+}
+
+header{
+	z-index: 100 !important;
+}
+
+.gatsby-highlight  > div{
+	border: none !important;
+}
+
+.sidebar li a {
+	font-size: 0.8rem;
+}
+
+.right-component{
+	background-color: #f1efff;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	width: 40%;
+	content: '';
+	height: 100%;
+}
+
+.pl-20{
+	padding-left: 20px;
+}
+
+.pr-20{
+	padding-right: 20px;
+}
+
+aside{
+	width: 270px !important;
+}
+
+aside::-webkit-scrollbar {
+	width: 5px;
+  }
+  
+  /* Track */
+ aside::-webkit-scrollbar-track {
+	background-color: transparent; 
+	border-radius: 10px;
+  }
+   
+  /* Handle */
+  aside::-webkit-scrollbar-thumb {
+	background: grey; 
+	border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  aside::-webkit-scrollbar-thumb:hover {
+	background: grey; 
+  }
+
+   .right-code p , .right-code h3, .right-code h4, .right-code h5, .right-code h6{
+	  padding: 0px 20px ;
+  }
+
+  #gatsby-focus-wrapper div[class*="-Wrapper"]{
+	  z-index: 100 !important;
+  }
+
+@media only screen and (max-width: 1000px){
+	aside{
+		opacity: 0;
+		visibility: hidden;
+		width: 0px !important;
+		padding: 0 !important;
+}
+}
+
+@media only screen and (max-width: 700px){
+	.left-side{
+		width: 100%;
+		padding: 0px 20px;
+	}
+
+	.right-component{
+		display: none;
+	}
+
+	.right-code p , .right-code h3, .right-code h4, .right-code h5, .right-code h6{
+		padding: 0px 0px ;
+	}
+
+	.header-wrapper {
+		width: 100%;
+	}
+	
+	.right-code{
+		width: 100%;
+		float: initial;
+		height: 100%;
+		z-index: 0;
+		padding: 20px;
+	}
+	
+	.full-side{
+		display: flex;
+		height: 100%;
+		flex-direction: column;
+		padding-top: 1em;
+	}
+
+	main > div::after{
+		content:none;
+	}
+	
+	body > div > div > div{
+		margin: 0 !important;
+		max-width: 100% !important;
+	}
+	
+	nav[class*="Container"]{
+		width: 100%;
+		padding: 0px 20px !important;
+	}
+	
+	nav[class*="Container"] a {
+		padding-bottom: 20px;
+	}
+	
+	header{
+		z-index: 100 !important;
+	}
+	
+	.gatsby-highlight  > div{
+		border: 1px solid rgb(231, 228, 228) !important;
+	}
+	
+	.sidebar li a {
+		font-size: 0.8rem;
+	}
+
+	.ml-60{
+		margin-left: 0px;
+	}
+	
+}

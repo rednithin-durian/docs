@@ -1,0 +1,223 @@
+---
+title: Create Orders API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {DurianDemo, Demo} from '../components/durian-demo';
+import { Button } from 'theme-ui';
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+## Create an Order
+
+The following endpoint creates an Order
+
+<url post=""><div class="ib">/orders</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request Parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field | is required? | Description | Example |
+| ----- | ------------ | ----------- | ----------- |
+| _amount_ | `mandatory` | `string` The amount for which the Order was created | `"10000"` or `"10000.23"` for amount with decimal value |
+| _payment_option_ | `optional` |	`string` The type of payment option with which order was created	| `"full_payment"` or `"installment"` |
+| _currency_ |	`mandatory` |	`string` The currency associated with the Order's amount |	`"IDR"` |
+| _order_ref_id_ |	`optional` |	`string` The unique identifier of Order from the merchant |	`"INV/1/2021"` |
+| _customer_ |	`mandatory` |	`json object` The customer fields including `id`, `email`, `mobile`, `first_name`, `given_name`, `address` json object, `customer_ref_id`. One of `id`, `mobile`, `email` is `mandatory` field whereas others are `optional`. |	`{ "email": "jane.doe@gmail.com" }` |
+| _items_ |	`optional` |	`array` Array of objects with each object including name, brand, category, sku, price, qty, total_price	|
+| _metadata_ |	`optional` |	`json object` Key-Value pair that can be used to store additional information about the entity. e.g. `note`: `Force is with this order` | `{ "note": "Force is with this order" }` |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/orders \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "amount": "10000.67",
+    "payment_option": "full_payment",
+    "currency": "IDR",
+    "order_ref_id": "order_ref_001",
+    "customer": {
+        "customer_ref_id": "cust_001",
+        "given_name": "Jane Doe",
+        "email": "jane_doe@nomail.com",
+        "mobile": "85722173217",
+        "address": {
+            "receiver_name": "Jude Casper",
+            "receiver_phone": "8987654321",
+            "label": "Jude'\''s Address",
+            "address_line_1": "Jl. HR. Rasuna Said",
+            "address_line_2": "Apartment #786",
+            "city": "Jakarta Selatan",
+            "region": "Jakarta",
+            "country": "Indonesia",
+            "postal_code": "560008",
+            "landmark": "Kota Jakarta Selatan"
+        }
+    },
+    "items": [
+        {
+            "name": "LED Television",
+            "qty": 1,
+            "price": "10001.00",
+            "logo": "https://merchant.com/product_001/tv_image.jpg"
+        }
+    ],
+    "metadata": {
+        "my-meta-key": "my-meta-value",
+        "SettlementGroup": "BranchName"
+    }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{    \"amount\": \"10000.67\",    \"payment_option\": \"full_payment\",    \"currency\": \"IDR\",    \"order_ref_id\": \"order_ref_001\",    \"customer\": {        \"customer_ref_id\": \"cust_001\",        \"given_name\": \"Jane Doe\",        \"email\": \"jane_doe@nomail.com\",        \"mobile\": \"85722173217\",        \"address\": {            \"receiver_name\": \"Jude Casper\",            \"receiver_phone\": \"8987654321\",            \"label\": \"Jude's Address\",            \"address_line_1\": \"Jl. HR. Rasuna Said\",            \"address_line_2\": \"Apartment #786\",            \"city\": \"Jakarta Selatan\",            \"region\": \"Jakarta\",            \"country\": \"Indonesia\",            \"postal_code\": \"560008\",            \"landmark\": \"Kota Jakarta Selatan\"        }    },    \"items\": [        {            \"name\": \"LED Television\",            \"qty\": 1,            \"price\": \"10001.00\",            \"logo\": \"https://merchant.com/product_001/tv_image.jpg\"        }    ],    \"metadata\": {        \"my-meta-key\": \"my-meta-value\",        \"SettlementGroup\": \"BranchName\"    }}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/orders", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{    \"amount\": \"10000.67\",    \"payment_option\": \"full_payment\",    \"currency\": \"IDR\",    \"order_ref_id\": \"order_ref_001\",    \"customer\": {        \"customer_ref_id\": \"cust_001\",        \"given_name\": \"Jane Doe\",        \"email\": \"jane_doe@nomail.com\",        \"mobile\": \"85722173217\",        \"address\": {            \"receiver_name\": \"Jude Casper\",            \"receiver_phone\": \"8987654321\",            \"label\": \"Jude's Address\",            \"address_line_1\": \"Jl. HR. Rasuna Said\",            \"address_line_2\": \"Apartment #786\",            \"city\": \"Jakarta Selatan\",            \"region\": \"Jakarta\",            \"country\": \"Indonesia\",            \"postal_code\": \"560008\",            \"landmark\": \"Kota Jakarta Selatan\"        }    },    \"items\": [        {            \"name\": \"LED Television\",            \"qty\": 1,            \"price\": \"10001.00\",            \"logo\": \"https://merchant.com/product_001/tv_image.jpg\"        }    ],    \"metadata\": {        \"my-meta-key\": \"my-meta-value\",        \"SettlementGroup\": \"BranchName\"    }}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/orders")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/orders',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{    "amount": "10000.67",    "payment_option": "full_payment",    "currency": "IDR",    "order_ref_id": "order_ref_001",    "customer": {        "customer_ref_id": "cust_001",        "given_name": "Jane Doe",        "email": "jane_doe@nomail.com",        "mobile": "85722173217",        "address": {            "receiver_name": "Jude Casper",            "receiver_phone": "8987654321",            "label": "Jude\'s Address",            "address_line_1": "Jl. HR. Rasuna Said",            "address_line_2": "Apartment #786",            "city": "Jakarta Selatan",            "region": "Jakarta",            "country": "Indonesia",            "postal_code": "560008",            "landmark": "Kota Jakarta Selatan"        }    },    "items": [        {            "name": "LED Television",            "qty": 1,            "price": "10001.00",            "logo": "https://merchant.com/product_001/tv_image.jpg"        }    ],    "metadata": {        "my-meta-key": "my-meta-value",        "SettlementGroup": "BranchName"    }}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/orders")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{    \"amount\": \"10000.67\",    \"payment_option\": \"full_payment\",    \"currency\": \"IDR\",    \"order_ref_id\": \"order_ref_001\",    \"customer\": {        \"customer_ref_id\": \"cust_001\",        \"given_name\": \"Jane Doe\",        \"email\": \"jane_doe@nomail.com\",        \"mobile\": \"85722173217\",        \"address\": {            \"receiver_name\": \"Jude Casper\",            \"receiver_phone\": \"8987654321\",            \"label\": \"Jude's Address\",            \"address_line_1\": \"Jl. HR. Rasuna Said\",            \"address_line_2\": \"Apartment #786\",            \"city\": \"Jakarta Selatan\",            \"region\": \"Jakarta\",            \"country\": \"Indonesia\",            \"postal_code\": \"560008\",            \"landmark\": \"Kota Jakarta Selatan\"        }    },    \"items\": [        {            \"name\": \"LED Television\",            \"qty\": 1,            \"price\": \"10001.00\",            \"logo\": \"https://merchant.com/product_001/tv_image.jpg\"        }    ],    \"metadata\": {        \"my-meta-key\": \"my-meta-value\",        \"SettlementGroup\": \"BranchName\"    }}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 Success
+
+Here is an example of success response
+
+```js
+
+{
+    "data": {
+        "id": "ord_0dIWbuDJQ84078",
+        "customer_id": "cus_ViPeX4iBYp2233",
+        "order_ref_id": "order_ref_001",
+        "amount": "10001.00",
+        "payment_option": "full_payment",
+        "currency": "IDR",
+        "status": "started",
+        "created_at": "2021-04-01T14:39:37.860426Z",
+        "updated_at": "2021-04-01T14:39:37.860426Z",
+        "metadata": {
+            "my-meta-key": "my-meta-value",
+            "SettlementGroup": "BranchName"
+        },
+        "items": [
+            {
+                "name": "LED Television",
+                "qty": 1,
+                "price": "10001.00",
+                "logo": "https://merchant.com/product_001/tv_image.jpg"
+            }
+        ],
+        "access_token": "adsyoi12sdASd123ASX@qqsda231"
+    }
+}
+
+```
+
+#### Error Response Code : 400
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "required fields missing",
+    "error_code": "DPAY_INVALID_REQUEST",
+    "errors": [
+        {
+            "field": "amount=\"amount invalid\"\n",
+            "message": "Please provide valid order data"
+        }
+    ]
+}
+```
+
+</div>

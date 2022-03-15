@@ -1,0 +1,151 @@
+---
+title: Payment Fetch API
+description:
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint retrieves the details of all Payments created
+
+<url get = ""><div class = "ib">/payments</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+  <div class = 'left-side'>
+
+**Query Parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? |	Description |
+| ----- | --------------- | ------------- |
+| _from_ |	`optional` |	`integer` Timestamp (in Unix format) from when the payments should be fetched |
+| _to_ |	`optional` |	`integer` Timestamp (in Unix format) up till when payments are to be fetched |
+| _skip_ |	`optional` |	`integer` The number of payments to be skipped. The default value is 0. This can be used for pagination, in combination with count |
+| _limit_ |	`optional` |	`integer` Number of payments to be fetched. Default value is 25. This can be used for pagination, in combination with the skip parameter |
+
+ </div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X GET \
+  'https://api.durianpay.id/v1/payments?limit=50&skip=10' \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("GET", "/v1/payments?limit=50&skip=10", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments?limit=50&skip=10")
+  .get()
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'GET',
+  url: 'https://api.durianpay.id/v1/payments',
+  qs: { limit: '50', skip: '10' },
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments?limit=50&skip=10")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Get.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div> 
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+  payments: [{
+    "id": "pay_A31sd3AwAgItmmXdp",
+    "amount": "20000",
+    "currency": "IDR",
+    "status": "completed",
+    "order_id": "ord_B14sdfwAdmmSDF24a",
+    "payment_ref_id": "txn2314",
+    "created_at": 1582628071,
+    "metadata": []
+  }],
+  total: 1
+}
+```
+
+#### Error Response Code : 401
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "invalid Authorization header in request"
+}
+```
+
+</div>

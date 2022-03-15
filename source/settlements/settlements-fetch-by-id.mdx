@@ -1,0 +1,137 @@
+---
+title: Settlements By ID API
+description:
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint retrieves the settlement based on ID
+
+<url get = ""><div class = "ib">/settlements/:id</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Query parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? |	Description |
+| ------- | ------------- | ------------- |
+| _id_ |	`mandatory` |	`string` Unique identifier of the settlement ID |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl --location --request GET 'api.durianpay.id/v1/settlements/set_WDizQUoyWy8680' \
+--header 'Authorization: <SECRET KEY>'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPConnection("api.durianpay.id")
+
+headers = {
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("GET", "/v1/settlements/set_fmhAoKDrlt7702", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://api.durianpay.id/v1/settlements/set_fmhAoKDrlt7702")
+  .get()
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'GET',
+  url: 'http://api.durianpay.id/v1/settlements/set_fmhAoKDrlt7702',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("http://api.durianpay.id/v1/settlements/set_fmhAoKDrlt7702")
+
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(url)
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+  "data": {
+    "id": "set_WDizQUoyWy8680",
+    "settlement_amount": "50000",
+    "status": "settled",
+    "fee": "10000",
+    "created_at": "2021-05-17T08:32:00.628182Z",
+    "settled_at": "2021-05-27T08:32:00.628182Z",
+    "promo_amount": "10000"
+  }
+}
+```
+
+#### Error Response Code : 404
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "sql: no rows in result set"
+}
+```
+
+</div>

@@ -1,0 +1,39 @@
+---
+title: Orders Object
+description:
+---
+import {Message} from 'theme-ui';
+
+<div class = 'pl-20 pr-20'>
+
+Durianpay enables you to create Orders (or payment intents) and link them to actual payments. Orders are important as it helps you associate every payment with an order (and a customer), thus preventing multiple/duplicate payments easily as well as eases refund/partial refunds.
+
+> We recommend creating Order as soon as amount is known, such as when customer begins the checkout process, to help track your sales funnel. If the amount changes, you can update the amount as well. For example, if your customer backs out of the checkout process and adds new items to their cart, you may need to update the amount accordingly when they start the checkout process again.
+
+If the checkout process is interrupted and resumes later, you should attempt to reuse the same Order instead of creating a new one. Each Order has a unique ID that you can use to retrieve it if you need it again. In your application’s data model, you can store the OrderID on the customer’s shopping cart or session in order to facilitate retrieval. The benefit of reusing the Order is that the object helps track any failed payment attempts for a given customer, cart or session.
+
+## Order Life Cycle
+
+| Status | Description |
+| -------- | ------------- |
+| `started` | When you create an order, it is in `started` state. It stays in this state till any payment is attempted against it |
+| `processing` | An order moves to `processing` state when a payment is created/attempted on it. It remains in this state till one payment associated with this order (at least) is captured |
+| `completed` |	After the successful capture of the payment, the order moves to the `paid` state. No further payment requests are permitted once the order moves to the paid state. The order stays in this state even if the payment associated with the order is refunded | 
+
+## Order Entity
+
+| Field	| Description |
+| ------ | ----------- |
+| **id** |	`string` The unique identifier of Order |
+| _amount_ | `string` The amount for which the Order was created |
+| _payment_option_ | `string` The type of payment option with which order is created. Can be of type `full_payment` and `installment`. Default value: `full_payment`. |
+| _currency_ | `string` The currency associated with the Order's amount |
+| _status_ | `string` The status of Order |
+| _order_ref_id_ | `string` The unique identifier of Order from the merchant |
+| _is_live_	| `boolean` Flag denoting if the order has been created in `sandbox` or `live mode` |
+| _created_at_ | `integer` Indicates the Unix timestamp when this Order was created |
+| _customer_ | `object` Information about the customer who created the Order |
+| _payments_ | `array` Array of payment objects against the Order |
+| _metadata_ | `json object` Key-Value pair that can be used to store additional information about the entity. e.g. `note`: `Force is with this order` |
+
+</div>

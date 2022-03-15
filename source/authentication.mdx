@@ -1,0 +1,65 @@
+---
+title: Authentication
+description: 
+---
+
+<div class = 'pl-20 pr-20'>
+
+import {
+  ExpansionPanel,
+  ExpansionPanelList,
+  ExpansionPanelListItem
+} from 'gatsby-theme-apollo-docs';
+import { Message } from 'theme-ui';
+
+Your API requests to Durianpay API must be authenticated using your account's API keys. An authentication error will be returned if the API key is not provided or invalid.
+
+Every Durianpay account is provided with API keys for testing to try out Durianpay API and for running live requests. Your API keys are available in the Settings of the dashboard (or through your dedicated Customer Success Manager).
+
+## Sandbox and Live mode
+
+To test our APIs, you can send API requests in sandbox mode. This means all requests will not process actual payments. The sandbox and live modes function almost the same with a few differences:
+
+In sandbox mode, payments are not actually processed by our payment processing providers, and only our test sample data can be used. Some API resources such as sources have a more complicated flow in live mode. It requires more steps than those in sandbox mode (for example, 3DS verification in case of card payments). You can only get your live API keys once your account is activated.
+
+## Authentication/API keys
+
+All Durianpay APIs are authorized using `Basic Authorization`. Basic authorization requires your secret key which can be obtained from Durianpay dashboard or through your dedicated Customer Success Manager.
+
+* Sandbox Mode - `dp_test_XXXXXXXXX`
+* Live Mode - `dp_live_XXXXXXXXX`
+
+The secret key is meant to be kept confidential and only stored on your own servers. Secret API key can perform any API requests to Durianpay without restriction and with access to overall data.
+
+<Message variant="tip">
+&#128161; Never share your secret key with anyone. Treat your secret keys like your passwords. The best practice is to store the secret key in your server's environment variable and not hardcoded in your codebase. If, for any reason, you believe that your secret keys have been compromised, please contact us immediately at developers@durianpay.id (or your dedicated Customer Success Manager) so we can revoke the old keys and give you new ones.
+</Message>
+
+Authorization Header
+The Durianpay authorization header follows HTTP(S) BASIC AUTH convention. It utilizes Merchant Server Key as Username and blank value for Password.
+
+To get the authorization header, follow the steps given below.
+
+1. Get the _Server Key_.
+> The _Server Key_ is unique for _Sandbox_ environment and _Production_ environment. To obtain the respective _Server Key_ follow the links given below.
+>* Server Key for Sandbox environment
+>* Server Key for Production environment
+
+2. Replace `Username` and `Password`. 
+
+ >The BASIC AUTH format is `Username:Password`.\
+ >Replace `Username` with Server Key and leave `Password` blank. So, this results in a string `{Your_Server_Key}:`.
+
+3. Encode the resulting string to Base64 format.
+4. Include this Base64 encoded string in the HTTP(S) header.
+>Prepend the authorization method `(Basic)` and a space `()` to the encoded string. The authorization header is as given below:
+>`Authorization: Basic [Base64({Your_Server_Key}:)]`
+
+>&#128161;
+>Notes:
+>1. Remember to include `:` to the _Server Key_ before passing it to the Base64 encoder.
+>2. The Authorization Header given in the example is for reference only. Please use your own Sandbox/Production Server Key to create your API key.
+>3. The API keys for Sandbox and Production are different. When going live, generate new API Keys to access the live endpoints.
+
+</div>
+

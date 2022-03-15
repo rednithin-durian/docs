@@ -1,0 +1,183 @@
+---
+title: Create Instapay/Payment Link API
+description:  
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+## Create an Instapay link
+
+The following endpoint creates an Order:
+
+<url post = ""><div class = "ib">/orders</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------- |
+| _amount_ |	`mandatory` |	`string` The amount for which the Order was created |
+| _currency_ |	`mandatory` |	`string` The currency associated with the Order's amount |
+| _order_ref_id_ |	`optional`|	`string` The unique identifier of Order from the merchant |
+| _is_payment_link_ |	`mandatory` |	`true` Boolean flag denoting its a payment link order |
+| _customer_ |	`mandatory` |	`json` object The customer fields including `id`, `email`, `mobile`, `first_name`, `given_name`, `address_line_1`, `address_line_2`, `city`, `region`, `country`, `postal_code`, `customer_ref_id`. One of `id`, `mobile`, `email` is `mandatory` field whereas others are `optional`. |
+| _items_ |	`optional`|	`array` Array of objects with each object including `name`, `brand`, `category`, `sku`, `price`, `qty`, `total_price` |
+| _metadata_ |	`optional` |	`json object` Key-Value pair that can be used to store additional information about the entity. e.g. `note`: `Force is with this order` |
+| _is_notification_enabled_ |	`optional` |	`false` Boolean flag to send notification email to the customer |
+| _email_subject_ |	`optional`|	`string` if the `is_notification_enabled` set true, the text in this field will be used as the notification email's subject |
+| _email_content_ |	`optional` |	`string` if the `is_notification_enabled` set true, the text in this field will be used as the notification email's body |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST 
+  https://api.durianpay.id/v1/orders \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+  "amount": "20000",
+  "currency": "IDR",
+  "order_ref_id": "order2314", 
+  "is_payment_link": true,
+  "customer": {
+    "email": "jude.casper@durianpay.id"
+  }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = {  "amount": "20000",  "currency": "IDR",  "order_ref_id": "order2314",   "is_payment_link": true,  "customer": {    "email": "jude.casper@durianpay.id"  }}
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/orders", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{  "amount": "20000",  "currency": "IDR",  "order_ref_id": "order2314",   "is_payment_link": true,  "customer": {    "email": "jude.casper@durianpay.id"  }}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/orders")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/orders',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{  "amount": "20000",  "currency": "IDR",  "order_ref_id": "order2314",   "is_payment_link": true,  "customer": {    "email": "jude.casper@durianpay.id"  }}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/orders")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{"amount": "20000",  "currency": "IDR",  "order_ref_id": "order2314",   "is_payment_link": true,  "customer": {    "email": "jude.casper@durianpay.id"  }}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+  "data": {
+    "id": "ord_A31sd3AwAgItmmXdp",
+    "amount": "20000",
+    "customer_id": "cus_abcd1234",
+    "currency": "IDR",
+    "status": "started",
+    "order_ref_id": "order2314",
+    "created_at": 1582628071,
+    "payment_link_url": "d123ASX@qqsdaDasdd123ASX@qqsda",
+    "metadata": [],
+    "access_token: "adsyoi12sdASd123ASX@qqsda231" 
+  } 
+}
+
+// redirect user to https://links.durianpay.id/payment/{payment_link_url})
+```
+
+#### Error Response Code : 400
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "required fields missing",
+    "error_code": "DPAY_INVALID_REQUEST",
+    "errors": [
+        {
+            "field": "amount=\"currency  not supported yet\"\ncurrency=\"currency invalid\"\n",
+            "message": "Please provide valid order data"
+        }
+    ]
+}
+```
+
+</div>

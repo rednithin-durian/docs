@@ -1,0 +1,152 @@
+---
+title: Settlements Status By Payment ID API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint retrieves the settlement status based on Payment ID for a particular merchant
+
+<url get = ""><div class = "ib">/settlements/details</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Query parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? |	Description |
+| ----- | -------------- | ------------ |
+| _payment_id_ |	`mandatory` |	`string` Unique identifier of the payment ID |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl --location --request GET 'api.durianpay.id/v1/settlements/details?payment_id=pay_O7laHvW2BI5527' \
+--header 'Authorization: <SECRET KEY>'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPConnection("api.durianpay.id")
+
+headers = {
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    'content-type': "application/json",
+    }
+
+conn.request("GET", "/v1/settlements/details?payment_id=pay_N9Zzwjpyme7027", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("http://api.durianpay.id/v1/settlements/details?payment_id=pay_N9Zzwjpyme7027")
+  .get()
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .addHeader("content-type", "application/json")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'GET',
+  url: 'http://api.durianpay.id/v1/settlements/details',
+  qs: { payment_id: 'pay_N9Zzwjpyme7027' },
+  headers: 
+   { 
+     'content-type': 'application/json',
+     authorization: '[Base64({Your_Server_Key}:)]' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("http://api.durianpay.id/v1/settlements/details?payment_id=pay_N9Zzwjpyme7027")
+
+http = Net::HTTP.new(url.host, url.port)
+
+request = Net::HTTP::Get.new(url)
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request["content-type"] = 'application/json'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+  "data": {
+    "settlement_id": "set_WDizQUoyWy8680",
+    "payment_id": "pay_O7laHvW2BI5527",
+    "payment_reference": "",
+    "order_id": "ord_KlQRqodMqq0540",
+    "order_reference": "order_ref_001",
+    "status": "settled",
+    "currency": "IDR",
+    "settlement_amount": "19635.00",
+    "total_settlement_fee": "365.00",
+    "payment_discount": "",
+    "settled_at": "2021-05-17T08:32:00.628182Z",
+    "group": "A",
+    "payment_amount": "20000.00",
+    "payment_date": "2021-05-17T08:26:43.990125Z",
+    "transaction_amount": "20000.00",
+    "payment_channel": "ewallet_details",
+    "payment_subchannel": "SHOPEEPAY"
+  }
+}
+```
+
+#### Error Response Code : 404
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "settlement does not exists"
+}
+```
+
+</div>

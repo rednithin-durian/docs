@@ -1,0 +1,148 @@
+---
+title: Payment Fetch by ID API
+description:
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+The following endpoint retrieves the details of a single Payment
+
+<url get = ""><div class = "ib">/payments/:id</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Path Parameters**
+
+| Field |	is required? |	Description |
+| ----- | -------------- | ------------- |
+| _id_ |	`mandatory` |	`integer` Unique identifier of the Payment to be retrieved |
+
+**Query parameters**
+
+| Field |	is required? |	Description |
+| ------- | ------------- | ------------ |
+| _expand_ | 	`optional` |	`integer` Used to retrieve additional information about the Payment. Supported values are: `customer`, `order`. Example: `/payments/pay_A1B1C1D1234?expand[]=customer&expand[]=order` |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X GET \
+  https://api.durianpay.id/v1/payments/pay_76n67eK9Fq4137 \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("GET", "/v1/payments/pay_76n67eK9Fq4137", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/pay_76n67eK9Fq4137")
+  .get()
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'GET',
+  url: 'https://api.durianpay.id/v1/payments/pay_76n67eK9Fq4137',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/pay_76n67eK9Fq4137")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Get.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "id": "pay_A31sd3AwAgItmmXdp",
+    "amount": "20000",
+    "currency": "IDR",
+    "status": "completed",
+    "order_id": "ord_B14sdfwAdmmSDF24a",
+    "payment_ref_id": "txn2314",
+    "created_at": 1582628071,
+    "metadata": []
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "error getting payment",
+}
+```
+
+</div>

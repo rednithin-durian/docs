@@ -1,0 +1,210 @@
+---
+title: Create Promos API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+## Create an Order
+
+The following endpoint creates a Promo:
+
+<url post = ""><div class = "ib">/merchants/promos</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? |	Description |
+| ------ | -------------- | --------------- |
+| _amount_ |	`mandatory` |	`string` The amount for which the Promo was created |
+| _currency_ |	`mandatory` |	`string` The currency associated with the Promo's amount |
+| _label_ |	`mandatory` |	`string` The label you want to attach with the promotion, has to be unique |
+| _description_ |	`optional` |	`string` Description of the promotion |
+| _type_ |	`mandatory` |	`string` valid values are "card_promos", "ewallet_promos", "va_promos" |
+| _sub_type_ |	`mandatory` |	`string` valid values are "direct_discount", "cashback" |
+| _min_order_amount_ |	`mandatory` |	`string` denoting minimum order amount on which promo should apply |
+| _max_discount_amount_ |	`mandatory` |	`string` denoting maximum discount amount which promo should generate |
+| _starts_at_ |	`mandatory` |	`string` |
+| _ends_at_ |	`mandatory` |	`string` |
+| _discount_ |	`mandatory` |	`string` Depending on `discount_type`, value is either %discount or flat discount |
+| _discount_type_ |	`mandatory` |	`string` valid values are "percentage", "flat" |
+| _limit_type_ |	`mandatory`	 | `string` valid values are "quota", "budget" |
+|  |	`mandatory` |	`string` valid values are "total_price", "product_price", "shipping_price" |
+| _promo_details_ |	`mandatory` |	`object` Denoting the metadata specific to promo type |
+
+Note: Please note that out of `bin_list` and `bank_codes` at-least one should be present if promo includes `card_promo`
+
+
+| Field |	is required? |	Description |
+| ------ | -------------- | --------------- |
+| _amount_ |	`mandatory` |	`string` The amount for which the Promo was created |
+| _currency_ |	`mandatory` |	`string` The currency associated with the Promo's amount |
+| _label_ |	`mandatory` |	`string` The label you want to attach with the promotion, has to be unique |
+| _description_ |	`optional` |	`string` Description of the promotion |
+| _type_ |	`mandatory` |	`string` valid values are "card_promos", "ewallet_promos", "va_promos" |
+| _sub_type_ |	`mandatory` |	`string` valid values are "direct_discount", "cashback" |
+| _min_order_amount_ |	`mandatory` |	`string` denoting minimum order amount on which promo should apply |
+| _max_discount_amount_ |	`mandatory` |	`string` denoting maximum discount amount which promo should generate |
+| _starts_at_ |	`mandatory` |	`string` |
+| _ends_at_ |	`mandatory` |	`string` |
+| _discount_ |	`mandatory` |	`string` Depending on `discount_type`, value is either %discount or flat discount |
+| _discount_type_ |	`mandatory` |	`string` valid values are "percentage", "flat" |
+| _limit_type_ |	`mandatory`	 | `string` valid values are "quota", "budget" |
+| _price_deduction_type_ |	`mandatory` |	`string` valid values are "total_price", "product_price", "shipping_price" |
+| _promo_details_ |	`mandatory` |	`object` Denoting the metadata specific to promo type |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/merchants/promos \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{"type":"card_promos","label":"SALE502022","currency":"IDR","promo_details":{"bin_list":[424242],"bank_codes":[]},"discount_type":"percentage","discount":"10","min_order_amount":"","max_discount_amount":"","starts_at":"2022-02-24T18:30:00.000Z","ends_at":"2022-02-27T18:30:00.000Z","promo_type":"","description":"","sub_type":"direct_discount","limit_type":"quota","limit_value":"100","price_deduction_type":"total_price","code":"SALE2022"}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{\"type\":\"card_promos\",\"label\":\"SALE502022\",\"currency\":\"IDR\",\"promo_details\":{\"bin_list\":[424242],\"bank_codes\":[]},\"discount_type\":\"percentage\",\"discount\":\"10\",\"min_order_amount\":\"\",\"max_discount_amount\":\"\",\"starts_at\":\"2022-02-24T18:30:00.000Z\",\"ends_at\":\"2022-02-27T18:30:00.000Z\",\"promo_type\":\"\",\"description\":\"\",\"sub_type\":\"direct_discount\",\"limit_type\":\"quota\",\"limit_value\":\"100\",\"price_deduction_type\":\"total_price\",\"code\":\"SALE2022\"}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/merchants/promos", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{\"type\":\"card_promos\",\"label\":\"SALE502022\",\"currency\":\"IDR\",\"promo_details\":{\"bin_list\":[424242],\"bank_codes\":[]},\"discount_type\":\"percentage\",\"discount\":\"10\",\"min_order_amount\":\"\",\"max_discount_amount\":\"\",\"starts_at\":\"2022-02-24T18:30:00.000Z\",\"ends_at\":\"2022-02-27T18:30:00.000Z\",\"promo_type\":\"\",\"description\":\"\",\"sub_type\":\"direct_discount\",\"limit_type\":\"quota\",\"limit_value\":\"100\",\"price_deduction_type\":\"total_price\",\"code\":\"SALE2022\"}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/merchants/promos")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/merchants/promos',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{"type":"card_promos","label":"SALE502022","currency":"IDR","promo_details":{"bin_list":[424242],"bank_codes":[]},"discount_type":"percentage","discount":"10","min_order_amount":"","max_discount_amount":"","starts_at":"2022-02-24T18:30:00.000Z","ends_at":"2022-02-27T18:30:00.000Z","promo_type":"","description":"","sub_type":"direct_discount","limit_type":"quota","limit_value":"100","price_deduction_type":"total_price","code":"SALE2022"}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/merchants/promos")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{\"type\":\"card_promos\",\"label\":\"SALE502022\",\"currency\":\"IDR\",\"promo_details\":{\"bin_list\":[424242],\"bank_codes\":[]},\"discount_type\":\"percentage\",\"discount\":\"10\",\"min_order_amount\":\"\",\"max_discount_amount\":\"\",\"starts_at\":\"2022-02-24T18:30:00.000Z\",\"ends_at\":\"2022-02-27T18:30:00.000Z\",\"promo_type\":\"\",\"description\":\"\",\"sub_type\":\"direct_discount\",\"limit_type\":\"quota\",\"limit_value\":\"100\",\"price_deduction_type\":\"total_price\",\"code\":\"SALE2022\"}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = "right-code ml-60">
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "currency": "IDR",
+        "label": "SALE50202",
+        "description": "",
+        "min_order_amount": "",
+        "max_discount_amount": "",
+        "starts_at": "2022-02-24T18:30:00Z",
+        "ends_at": "2022-02-27T18:30:00Z",
+        "discount": "10",
+        "discount_type": "percentage",
+        "type": "card_promos",
+        "promo_details": {
+            "promo_id": "prm_rdrZVRIhcq5927",
+            "bin_list": [
+                424242
+            ],
+            "bank_codes": []
+        },
+        "sub_type": "direct_discount",
+        "limit_type": "quota",
+        "limit_value": "100",
+        "price_deduction_type": "total_price",
+        "status": "expired",
+        "created_at": "2022-03-06T21:55:43.412583Z",
+        "updated_at": "2022-03-06T21:55:43.412583Z",
+        "is_live": true,
+        "promo_usage": "",
+        "id": "prm_rdrZVRIhcq5927"
+    }
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "error creating promo"
+}
+```
+
+</div>

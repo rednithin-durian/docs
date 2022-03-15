@@ -1,0 +1,163 @@
+---
+title: Top-up API
+description: 
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+## Top-up amount
+
+The following endpoint can be used to top-up amount to durianpay account:
+
+<url post = ""><div class = "ib">/disbursements/topup</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request parameters**
+
+Following are the parameters to be sent in the request body:
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | -------------- |
+| _bank_id_ |	`mandatory` |	`integer` The id of the bank retrieved from the banks API. |
+| _amount_ |	`mandatory`	| `string` The amount of money to top-up. |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/disbursements/topup \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "bank_id": 1,
+    "amount": "10000"
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{\n    \"bank_id\": 1,\n    \"amount\": \"10000\"\n}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/disbursements/topup", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{\n    \"bank_id\": 1,\n    \"amount\": \"10000\"\n}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/disbursements/topup")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/disbursements/topup',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{\n    "bank_id": 1,\n    "amount": "10000"\n}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/disbursements/topup")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{\n    \"bank_id\": 1,\n    \"amount\": \"10000\"\n}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "sender_bank": "bni",
+        "total_amount": "10000",
+        "status": "processing",
+        "expiry_date": "2021-03-21T09:58:53Z",
+        "transfer_to": {
+            "bank_code": "bni",
+            "bank_name": "BNI / BNI Syariah",
+            "atm_bersama_code": "009",
+            "bank_account_number": "0437051936",
+            "account_holder_name": "PT Fliptech Lentera Inspirasi Pertiwi",
+            "unique_code": 10
+        },
+    }
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "error topping up balance"
+}
+```
+
+</div>

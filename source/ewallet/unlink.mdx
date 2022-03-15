@@ -1,0 +1,178 @@
+---
+title: Unlink E-Wallet Account API
+description:
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs'
+
+## Unlink E-Wallet Account
+The following endpoint Unlinks Gopay Account:
+
+<url post = ""><div class = "ib">/ewallet/account/unbind</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+**Request parameters**
+
+Following are the parameters to be sent in request body:
+
+| Field |	is required? |	Description |
+| ----- | ------------ | ------------------ |
+| _mobile_ |	`mandatory` |	`string` The mobile to unlink e-wallet account |
+| _wallet_type_ |	`mandatory` |	`string` The e-wallet you want to unlink ex GOPAY |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example**
+
+<MultiCodeBlock>
+
+```bash
+curl -u [Base64({Your_Server_Key}:)] \ 
+-X GET 'https://api.durianpay.id/v1//ewallet/account/unbind' \
+-H 'Is-live: true' \
+-H 'Content-Type: application/json' \
+-d '{"mobile": "8888888888",
+     "wallet_type": "GOPAY"}'  
+      
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{\"mobile\": \"8888888888\",\n     \"wallet_type\": \"GOPAY\"}"
+
+headers = {
+    'is-live': "true",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    'content-type': "application/json",
+    'cache-control': "no-cache",
+    'postman-token': "d78c1717-306f-e1db-f127-f946ade8b6b5"
+    }
+
+conn.request("POST", "/v1//ewallet/account/unbind", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\"mobile\": \"8888888888\",\n     \"wallet_type\": \"GOPAY\"}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1//ewallet/account/unbind")
+  .post(body)
+  .addHeader("is-live", "true")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .addHeader("content-type", "application/json")
+  .addHeader("cache-control", "no-cache")
+  .addHeader("postman-token", "1987666c-db7d-3c08-1de6-80af1302bf69")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1//ewallet/account/unbind',
+  headers: 
+   { 'postman-token': '5fccda1c-774e-0470-9d66-8e64df869f3d',
+     'cache-control': 'no-cache',
+     'content-type': 'application/json',
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'is-live': 'true' },
+  body: { mobile: '8888888888', wallet_type: 'GOPAY' },
+  json: true };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1//ewallet/account/unbind")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["is-live"] = 'true'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request["content-type"] = 'application/json'
+request["cache-control"] = 'no-cache'
+request["postman-token"] = 'b552a40e-04c1-395c-e41d-155730140d4d'
+request.body = "{\"mobile\": \"8888888888\",\n     \"wallet_type\": \"GOPAY\"}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+</div>
+
+</div>
+
+<div class = 'right-code ml-60'>
+
+#### Response Code : 200 Unbind Success
+Here is an example of success response
+
+```js
+{
+    "data": {
+        "wallet_type": "GOPAY",
+        "mobile": "8888888888",
+        "ref_id": "83f1c265-a345-4aed-8b42-08b0908a6ce7",
+        "status": "disabled",
+        "message": "account unbinded successfully"
+    }
+}
+```
+
+#### Error Response Code : 400
+Here is an example of error response for invalid request
+
+```js
+{
+    "error": "Mobile number is missing in request",
+    "error_code": "DPAY_INVALID_REQUEST"
+}
+```
+
+#### Error Response Code : 500
+Here is an example of error response
+
+```js
+{
+    "error": "Error in unbinding e-wallet account",
+    "error_code": "DPAY_INTERNAL_ERROR"
+}
+```
+
+</div>
