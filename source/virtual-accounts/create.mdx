@@ -39,26 +39,16 @@ Following are the parameters to be sent in the request body:
 | *auto_disable_after_payment* | `optional` | `boolean (default: false)` disable a reusable VA temporariliy after a payment. Patch API can be used to enable it again after changing some parameters  | `true` |
 
 
-The following table contains `prefixes` for each `bank` in `sandbox` mode:
+The following table has the `maximum account_suffix lengths` for each bank:
 
-| Bank Code | Bank Prefixes  |
+| Bank Code | Max Length  |
 |-----------|---------------------------|
-| MANDIRI | 890229004 |
-| BCA | 190061002 |
-| BRI | 123617005 |
-| PERMATA | 88565004 |
-| CIMB | 18991001 |
+| MANDIRI | 7 |
+| BCA | 14 |
+| BRI | 9 |
+| PERMATA | 8 |
+| CIMB | 7 |
 
-
-The following table has the `maximum account number lengths` for each bank:
-
-| Bank Code | Max Length (Bank Prefix + Remaining Digits)  |
-|-----------|---------------------------|
-| MANDIRI | 16 |
-| BCA | 23 |
-| BRI | 18 |
-| PERMATA | 16 |
-| CIMB | 16 |
 
 ### Error Codes
 
