@@ -32,14 +32,14 @@ It can either expire a VA(set `expiry_minutes` to `0`) or override the expiry ti
 
 ### Request parameters
 
-| Field             | is required? | Description      | Example |
-| ---------------- | --------------- | --------------------------------------------- | ------ |
-| *expiry_minutes* | `optional` | `integer` Number of minutes left till expiry from now. Set to 0 to expire VA | `10000`  | 
-| *min_amount* | `optional` | `integer` Modify minimum amount which can be paid to an open VA | `10000`  | 
-| *max_amount* | `optional` | `integer` Modify maximum amount which can be paid to an open VA | `10000`  | 
-| *amount* | `optional` | `integer` Modify maximum amount which can be paid to a closed VA | `10000`  | 
-| *is_disabled* | `optional` | `boolean` Modify enabling/disabling payments to a VA while still reserving it | `true`  | 
-| *va_ref_id* | `optional` | `string` Modify a reference ID which the merchant wants to use for a specific VA | `VA_XYZ_1234` |
+| Field             | is required? | Description      |
+| ---------------- | --------------- | --------------------------------------------- | 
+| *expiry_minutes* | `optional` | **Type:** `integer` <br /><br/> Number of minutes left till expiry from now. Set to 0 to expire VA <br /><br/> **Example:** `10000`  | 
+| *min_amount* | `optional` | **Type:** `integer` <br /><br/> Modify minimum amount which can be paid to an open VA <br /><br/> **Example:** `10000`  | 
+| *max_amount* | `optional` | **Type:** `integer` <br /><br/> Modify maximum amount which can be paid to an open VA <br /><br/> **Example:** `10000`  | 
+| *amount* | `optional` | **Type:** `integer` <br /><br/> Modify maximum amount which can be paid to a closed VA <br /><br/> **Example:** `10000`  | 
+| *is_disabled* | `optional` | **Type:** `boolean` <br /><br/> Modify enabling/disabling payments to a VA while still reserving it <br /><br/> **Example:** `true`  | 
+| *va_ref_id* | `optional` | **Type:** `string` <br /><br/> Modify a reference ID which the merchant wants to use for a specific VA <br /><br/> **Example:** `"VA_XYZ_1234"` |
 
 
 

@@ -23,20 +23,20 @@ The following endpoint creates a new virtual account
 ### Request parameters
 Following are the parameters to be sent in the request body:
 
-| Field             | is required? | Description      |   Example  | 
-| ---------------- | ------------ | ---------------- | ---------- |
-| *bank_code*          | `mandatory`  | `string` The bank code for the Virtual Account | `BRI`, `BCA`, `MANDIRI`, `PERMATA`, `CIMB` |
-| *name*          | `mandatory`  | `string` The name of virtual account | "John's Virtual Account" |
-| *is_closed* | `mandatory`  | `boolean` Whether account can accept open(any amount) or closed(specific amount) | `true` or `false`(default) |
-| *amount* | `optional`  | `string` specify amount to be paid to va when `is_closed=true` | `12000.12` |
-| *customer* | `mandatory` | `json object` with fields (`id`, `email`, `mobile`, `given_name`). One of (`id`, `mobile`, `email`) is mandatory field and `given_name` is mandatory. | ```{ "given_name": "Ardi Hanan", "mobile": "+6288888888", "email": "ardi@gmail.com" }``` |
-| *expiry_minutes* | `optional` | `integer (default for is_reusable=true:1440 and is_reusable=false:15768000)` number of minutes left till expiry from now maximum(15768000) | `10000`  | 
-| *account_suffix* | `optional` | `string` account suffix for the VA, if not specified a random suffix will be used to generate `account_number` | `1234` |
-| *is_reusable* | `optional` | `boolean (default: true)` whether multiple payments can be used for a particular VA | `true` |
-| *min_amount* | `optional` | `number (default: nil)` minimum amount to be paid to a VA in the case of `is_closed=false` | `10000` |
-| *max_amount* | `optional` | `number (default: nil)` maximum amount which can be paid to a VA in the case of `is_closed=false` | `20000` |
-| *va_ref_id* | `optional` | `string (default: "")` a reference ID which the merchant wants to use for a specific VA | `VA_XYZ_1234` |
-| *auto_disable_after_payment* | `optional` | `boolean (default: false)` disable a reusable VA temporariliy after a payment. Patch API can be used to enable it again after changing some parameters  | `true` |
+| Field             | is required? | Description      |
+| ---------------- | ------------ | ---------------- | 
+| *bank_code*          | `mandatory`  | **Type:** `string` <br /><br /> The bank code for the Virtual Account <br /><br/> **Example:** `"BRI"`, `"BCA"`, `"MANDIRI"`, `"PERMATA"`, `"CIMB"` |
+| *name*          | `mandatory`  |  **Type:** `string` <br /><br /> The name of virtual account <br /><br/> **Example:** "John's Virtual Account" |
+| *is_closed* | `optional`  |  **Type:** `boolean (default: false)` <br /><br /> Whether account can accept open(any amount) or closed(specific amount) <br /><br/> **Example:** `true` or `false` |
+| *amount* | `optional`  |  **Type:** `string` <br /><br /> Specify amount to be paid to va when `is_closed=true` <br /><br/> **Example:** `"12000.12"` |
+| *customer* | `mandatory` |  **Type:** `object` <br /><br /> Object containing fields (`id`, `email`, `mobile`, `given_name`). One of (`id`, `mobile`, `email`) is mandatory field and `given_name` is mandatory. <br /><br/> **Example:** ```{ "given_name": "Ardi Hanan", "mobile": "+6288888888", "email": "ardi@gmail.com" }``` |
+| *expiry_minutes* | `optional` |  **Type:** `integer (default for is_reusable=true:1440 and is_reusable=false:15768000)` <br /><br /> Number of minutes left till expiry from now maximum(15768000) <br /><br/> **Example:** `10000`  | 
+| *account_suffix* | `optional` |  **Type:** `string (default: random)` <br /><br /> Account suffix for the VA, if not specified a random suffix will be used to generate `account_number` <br /><br/> **Example:** `"1234"` |
+| *is_reusable* | `optional` |  **Type:** `boolean (default: true)` <br /><br /> Whether multiple payments can be used for a particular VA <br /><br/> **Example:** `true` or `false` |
+| *min_amount* | `optional` |  **Type:** `number (default: nil)` <br /><br /> Minimum amount to be paid to a VA in the case of `is_closed=false` <br /><br/> **Example:** `10000` |
+| *max_amount* | `optional` |  **Type:** `number (default: nil)` <br /><br /> Maximum amount which can be paid to a VA in the case of `is_closed=false` <br /><br/> **Example:** `20000` |
+| *va_ref_id* | `optional` |  **Type:** `string (default: "")` <br /><br /> A reference ID which the merchant wants to use for a specific VA <br /><br/> **Example:** `"VA_XYZ_1234"` |
+| *auto_disable_after_payment* | `optional` |  **Type:** `boolean (default: false)` <br /><br /> Disable a reusable VA temporariliy after a payment. Patch API can be used to enable it again after changing some parameters  <br /><br/> **Example:** `true` or `false` |
 
 
 The following table has the `maximum account_suffix lengths` for each bank:
