@@ -139,12 +139,33 @@ Here is an example of success response
 }
 ```
 
+#### Error Response Code : 400
+Here is an example error response for invalid request
+
+```js
+{
+    "error": "error reading request body",
+    "error_code": "DPAY_INTERNAL_ERROR",
+}
+```
+
+#### Error Response Code : 401
+Here is an example error response for unauthorized access
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
 #### Error Response Code : 500
-Here is an example of error response for invalid request
+Here is an example error response for internal server error
 
 ```js
 {
     "error": "error getting disbursement",
+    "error_code": "DPAY_INTERNAL_ERROR"
 }
 ```
 

@@ -129,12 +129,23 @@ Here is an example of success response
 }
 ```
 
-#### Error Response Code : 500
-Here is an example of error response for invalid request
+#### Error Response Code : 401
+Here is an example error response for unauthorized access
 
 ```js
 {
-    "error": "error cancelling payment"
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
+#### Error Response Code : 500
+Here is an example error response for internal server error
+
+```js
+{
+    "error": "error cancelling payment",
+    "error_code": "DPAY_INTERNAL_ERROR"
 }
 ```
 

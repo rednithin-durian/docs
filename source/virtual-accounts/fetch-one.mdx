@@ -1,0 +1,169 @@
+---
+id: fetch-one
+title: Virtual Accounts Fetch By ID API
+sidebar_label: Virtual Accounts Fetch by ID API
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+
+The following endpoint retrieves the details of a single Virtual Account
+<url get=""><div class="ib">/payments/virtual-accounts/:id</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+### Path parameters
+
+| Field             | is required? | Description      |
+| :---------------- | --------------- | --------------------------------------------- |
+| *id*          | `mandatory`  | `integer` Unique identifier of the Virtual Account to be retrieved |
+
+</div>
+
+<div class = 'right-code'>
+
+### Sample Request (cURL)
+
+<MultiCodeBlock>
+
+```bash
+curl --location --request GET 'https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_6YBBiGRAPa0943' \
+--header 'Authorization: [Base64({Your_Server_Key}:)]'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+payload = ''
+headers = {
+  'Authorization': '[Base64({Your_Server_Key}:)]'
+}
+conn.request("GET", "/v1/payments/virtual-accounts/va_sample_6YBBiGRAPa0943", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient().newBuilder()
+  .build();
+MediaType mediaType = MediaType.parse("text/plain");
+RequestBody body = RequestBody.create(mediaType, "");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_6YBBiGRAPa0943")
+  .method("GET", body)
+  .addHeader("Authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require('request');
+var options = {
+  'method': 'GET',
+  'url': 'https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_6YBBiGRAPa0943',
+  'headers': {
+    'Authorization': '[Base64({Your_Server_Key}:)]'
+  }
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+
+```
+
+```ruby
+require "uri"
+require "net/http"
+
+url = URI("https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_6YBBiGRAPa0943")
+
+https = Net::HTTP.new(url.host, url.port)
+https.use_ssl = true
+
+request = Net::HTTP::Get.new(url)
+request["Authorization"] = "[Base64({Your_Server_Key}:)]"
+
+response = https.request(request)
+puts response.read_body
+
+```
+
+
+</MultiCodeBlock>
+
+### Sample Response
+```json
+{
+    "data": {
+        "virtual_account": {
+            "id": "va_sample_6YBBiGRAPa0943",
+            "bank_code": "PERMATA",
+            "account_number": "8856500451311212",
+            "name": "Ardi Hanan Durian",
+            "is_closed": false,
+            "amount": 0,
+            "currency": "IDR",
+            "customer_id": "cus_akA2FwrR5B2217",
+            "is_sandbox": true,
+            "created_at": "2022-06-27T02:42:28.753671Z",
+            "expiry_at": "2022-06-27T13:54:27.333786Z",
+            "metadata": {},
+            "is_disabled": false,
+            "is_paid": false,
+            "is_reusable": true,
+            "min_amount": 50000,
+            "max_amount": null,
+            "va_ref_id": "",
+            "auto_disable_after_payment": false
+        },
+        "virtual_account_status": "VirtualAccountExpired",
+        "customer": {
+            "id": "cus_akA2FwrR5B2217",
+            "customer_ref_id": "",
+            "given_name": "",
+            "middle_name": "",
+            "sur_name": "",
+            "email": "p.ardi.h@gmail.com",
+            "mobile": "+628978678578"
+        }
+    }
+}
+```
+
+#### Authorization Errors
+
+Authorization errors are errors that occur during `authorization`. The status code returned is usually `401`
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
+### Sample Error
+
+The possible error status codes are: `404`, `500`
+
+```json
+{
+    "error": "sql: no rows in result set",
+    "error_code": "DPAY_VA_NOT_FOUND",
+    "request_id": "dp_d3HX9S5W0r4989"
+}
+```
+
+</div>
+
+</div>

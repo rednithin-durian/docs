@@ -26,6 +26,7 @@ description:
 | _type_ |	`string` Type of payment. Possible values `card`, `VA`, `wallet` |
 | _created_at_ |	`integer` Indicates the Unix timestamp when this Payment was created |
 | _metadata_ |	`json object` Key-Value pair that can be used to store additional information about the entity. e.g. `note`: `Force is with this payment` |
+| _failure_reason_ | `json object` The *failure_reason* fields including `code`, `message`. `integer` code is the failure status code and `string` `message` is the failure description|
 
 ### Payment Failure Codes 
 

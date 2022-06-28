@@ -16,7 +16,126 @@ The following endpoint retrieves the list of banks
 
 </div>
 
-<div class = 'right-code ml-60'>
+<div class='full-side'>
+
+  <div class='left-side'>
+
+## Supported banks
+
+Currently we support disbursement to these banks only.
+
+| Bank Name |	Bank Code |
+| ----------- | --------- |
+| Bank Mandiri |	mandiri |
+| Bank Rakyat Indonesia |	bri |
+| BNI (Bank Negara Indonesia) |	bni |
+| Bank Central Asia |	bca |
+| BSI (Bank Syariah Indonesia) |	bsm |
+| CIMB Niaga & CIMB Niaga Syariah |	cimb |
+| Muamalat |	muamalat |
+| Bank Danamon & Danamon Syariah |	danamon |
+| Bank Permata & Permata Syariah |	permata |
+| Maybank Indonesia |	bii |
+| Panin Bank |	panin |
+| TMRW/UOB |	uob |
+| OCBC NISP |	ocbc |
+| Citibank |	citibank |
+| Bank Artha Graha Internasional |	artha |
+| Bank of Tokyo Mitsubishi UFJ |	tokyo |
+| DBS Indonesia |	dbs |
+| Standard Chartered Bank |	standard_chartered |
+| Bank Capital Indonesia |	capital |
+| ANZ Indonesia |	anz |
+| Bank of China (Hong Kong) Limited |	boc |
+| Bank Bumi Arta |	bumi_arta |
+| HSBC Indonesia |	hsbc |
+| Rabobank International Indonesia |	rabobank |
+| Bank Mayapada |	mayapada |
+| BJB |	bjb |
+| Bank DKI Jakarta |	dki |
+| BPD DIY |	daerah_istimewa |
+| Bank Jateng |	jawa_tengah |
+| Bank Jatim |	jawa_timur |
+| Bank Jambi |	jambi |
+| Bank Sumut |	sumut |
+| Bank Sumbar (Bank Nagari) |	sumatera_barat |
+| Bank Riau Kepri |	riau_dan_kepri |
+| Bank Sumsel Babel |	sumsel_dan_babel |
+| Bank Lampung |	lampung |
+| Bank Kalsel |	kalimantan_selatan |
+| Bank Kalbar |	kalimantan_barat |
+| Bank Kaltim |	kalimantan_timur |
+| Bank Kalteng |	kalimantan_tengah |
+| Bank Sulselbar |	sulselbar |
+| Bank SulutGo |	sulut |
+| Bank NTB Syariah |	nusa_tenggara_barat |
+| BPD Bali |	bali |
+| Bank NTT |	nusa_tenggara_timur |
+| Bank Maluku |	maluku |
+| Bank Papua |	papua |
+| Bank Bengkulu |	bengkulu |
+| Bank Sulteng |	sulawesi |
+| Bank Sultra |	sulawesi_tenggara |
+| Bank Nusantara Parahyangan |	nusantara_parahyangan |
+| Bank of India Indonesia |	india |
+| Bank Mestika Dharma |	mestika_dharma |
+| Bank Sinarmas |	sinarmas |
+| Bank Maspion Indonesia |	maspion |
+| Bank Ganesha |	ganesha |
+| ICBC Indonesia |	icbc |
+| QNB Indonesia |	qnb_kesawan |
+| BTN/BTN Syariah |	btn |
+| Bank Woori Saudara |	woori |
+| BTPN |	tabungan_pensiunan_nasional |
+| Bank BTPN Syariah |	btpn_syr |
+| BJB Syariah |	bjb_syr |
+| Bank Mega |	mega |
+| Wokee/Bukopin |	bukopin |
+| Bank Bukopin Syariah |	bukopin_syr |
+| Bank Jasa Jakarta |	jasa_jakarta |
+| LINE Bank/KEB Hana |	hana |
+| Motion/MNC Bank |	mnc_internasional |
+| BRI Agroniaga |	agroniaga |
+| SBI Indonesia |	sbi_indonesia |
+| Blu/BCA Digital |	royal |
+| Nobu (Nationalnobu) Bank |	nationalnobu |
+| Bank Mega Syariah |	mega_syr |
+| Bank Ina Perdana |	ina_perdana |
+| Bank Sahabat Sampoerna |	sahabat_sampoerna |
+| Seabank/Bank BKE |	kesejahteraan_ekonomi |
+| BCA (Bank Central Asia) Syariah |	bca_syr |
+| Jago/Artos |	artos |
+| Bank Mayora Indonesia |	mayora |
+| Bank Index Selindo |	index_selindo |
+| Bank Victoria International |	victoria_internasional |
+| Bank IBK Indonesia |	agris |
+| CTBC (Chinatrust) Indonesia |	chinatrust |
+| Commonwealth Bank |	commonwealth |
+| Bank Victoria Syariah |	victoria_syr |
+| BPD Banten |	banten |
+| Bank Mutiara |	mutiara |
+| Panin Dubai Syariah |	panin_syr |
+| Bank Aceh Syariah|	aceh |
+| Bank Antardaerah |	antardaerah |
+| Bank China Construction Bank Indonesia |	ccb |
+| Bank CNB (Centratama Nasional Bank) |	cnb |
+| Bank Dinar Indonesia |	dinar |
+| BPR EKA (Bank Eka) |	eka |
+| Allo Bank/Bank Harda Internasional |	harda |
+| BANK MANTAP (Mandiri Taspen) |	mantap |
+| Bank Multi Arta Sentosa (Bank MAS) |	mas |
+| Bank Prima Master |	prima |
+| Bank Shinhan Indonesia |	shinhan |
+| Neo Commerce/Yudha Bhakti |	yudha_bakti |
+| GoPay |	gopay |
+| OVO |	ovo |
+| ShopeePay |	shopeepay |
+| Dana |	dana |
+| LinkAja |	linkaja |
+
+</div>
+
+<div class = 'right-code'>
 
 **Example**
 
@@ -132,12 +251,25 @@ Here is an example of success response
 ```
 
 #### Error Response Code : 401
-Here is an example of error response for invalid request
+Here is an example error response for unauthorized access
 
 ```js
 {
-    "error": "invalid Authorization header in request"
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
 }
 ```
+
+#### Error Response Code : 500
+Here is an example error response for internal server error
+
+```js
+{
+    "error": "error getting banks",
+    "error_code": "DPAY_INTERNAL_ERROR"
+}
+```
+
+</div>
 
 </div>

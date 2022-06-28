@@ -161,6 +161,17 @@ Form errors are those which occur `during form validation` & contain an `errors 
 }
 ```
 
+#### Authorization Errors
+
+Authorization errors are errors that occur during `authorization`. The status code returned is usually `401`
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
 #### Other Errors
 
 Other errors are `failures` which occur `after form validation`. The status codes codes are usually `422`.

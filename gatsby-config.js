@@ -34,7 +34,9 @@ module.exports = {
           null: [
             'index', 
             'authentication',
-            'security'
+            'security',
+            'sandbox',
+            '[Webhooks and Callbacks](https://durianpay.id/docs/afterpayments/webhooks/)'
           ],
           'Orders': [
             'orders/overview',
@@ -51,6 +53,7 @@ module.exports = {
             'payments/status',
             'payments/verify',
             'payments/cancel',
+            'payments/mdr-calculations',
           ],
           'Promos': [
             'promos/create',
@@ -96,12 +99,21 @@ module.exports = {
           'Customers API': [
             'customers/customers-api'
           ],
-          'Static VA API (closed beta)': [
+          'Static VA API (deprecated)': [
+            'static-virtual-account/overview',
             'static-virtual-account/create',
             'static-virtual-account/fetch',
             'static-virtual-account/fetch-one',
             'static-virtual-account/patch-one',
             'static-virtual-account/simulate',
+          ],
+          'Virtual Accounts API (beta)': [
+            'virtual-accounts/overview',
+            'virtual-accounts/create',
+            'virtual-accounts/fetch',
+            'virtual-accounts/fetch-one',
+            'virtual-accounts/patch-one',
+            'virtual-accounts/simulate',
           ]
         },
         footerNavConfig: {

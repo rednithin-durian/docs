@@ -48,17 +48,19 @@ const StyledListItem = styled.li({
     color: 'inherit',
     textDecoration: 'none',
     // create space around the link and cancel it out
-    padding: '3px 10px',
+    padding: '4px 10px',
     margin: '-3px -10px',
-    borderRadius: 4,
-    ':hover': {
-      opacity: colors.hoverOpacity
+    borderRadius: 2,
+    lineHeight: '1.6rem',
+	  ':hover': {
+      opacity: colors.hoverOpacity,
+      background: '#eee'
     },
     '&.active': {
       color: colors.primary,
       pointerEvents: 'none',
       fontWeight: 600,
-      background: colors.background
+      background: '#fff'
     }
   }
 });

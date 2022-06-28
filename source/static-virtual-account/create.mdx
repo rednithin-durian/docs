@@ -25,12 +25,23 @@ Following are the parameters to be sent in the request body:
 
 | Field             | is required? | Description      |   Example  | 
 | :---------------- | ------------ | ---------------- | ---------- |
-| *bank_code*          | `mandatory`  | `string` The bank code for the Virtual Account | `BRI`, `BCA`, `MANDIRI`, `PERMATA`
+| *bank_code*          | `mandatory`  | `string` The bank code for the Virtual Account | `BRI`, `BCA`, `MANDIRI`, `PERMATA`, `CIMB`
 | *name*          | `mandatory`  | `string` The name of virtual account | "John's Virtual Account"
 | *is_closed* | `mandatory`  | `boolean` Whether account can accept open(any amount) or fixed(specific amount) | `true` or `false`(default)
 | *customer* | `mandatory` | `json object` with fields (`id`, `email`, `mobile`, `first_name`, `given_name`, `customer_ref_id`). One of (`id`, `mobile`, `email`) is mandatory field and `given_name` is mandatory. | ```{ "email": "jane.doe@gmail.com", "given_name": "Jane" }```
 | *expiry_minutes* | `optional` | `integer` number of minutes left till expiry from now (default 1440), maximum(15768000) | `10000`  | 
 | *account_number* | `optional` | `string` account number which includes bank prefix, if not specified a random one is generated using bank prefix (refer below table for bank wise length) | `1236270056514331`
+
+The following table contains `prefixes` for each `bank` in `sandbox` mode:
+
+| Bank Code | Bank Prefixes  |
+|-----------|---------------------------|
+| MANDIRI | 890229004 |
+| BCA | 190061002 |
+| BRI | 123617005 |
+| PERMATA | 88565004 |
+| CIMB | 18991001 |
+
 
 The following table has the `maximum account number lengths` for each bank:
 
@@ -40,6 +51,7 @@ The following table has the `maximum account number lengths` for each bank:
 | BCA | 23 |
 | BRI | 18 |
 | PERMATA | 16 |
+| CIMB | 16 |
 
 
 </div>
@@ -206,6 +218,17 @@ Form errors are those which occur `during form validation` & contain an `errors 
             "message": "can't be less than equal to 0"
         }
     ]
+}
+```
+
+#### Authorization Errors
+
+Authorization errors are errors that occur during `authorization`. The status code returned is usually `401`
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
 }
 ```
 

@@ -33,10 +33,10 @@ Following are the parameters to be sent in the request body:
 | _payment_option_ | `optional` |	`string` The type of payment option with which order was created	| `"full_payment"` or `"installment"` |
 | _currency_ |	`mandatory` |	`string` The currency associated with the Order's amount |	`"IDR"` |
 | _order_ref_id_ |	`optional` |	`string` The unique identifier of Order from the merchant |	`"INV/1/2021"` |
-| _customer_ |	`mandatory` |	`json object` The customer fields including `id`, `email`, `mobile`, `first_name`, `given_name`, `address` json object, `customer_ref_id`. One of `id`, `mobile`, `email` is `mandatory` field whereas others are `optional`. |	`{ "email": "jane.doe@gmail.com" }` |
-| _items_ |	`optional` |	`array` Array of objects with each object including name, brand, category, sku, price, qty, total_price	|
+| _customer_ |	`mandatory` |	`json object` The customer fields including `id`, `email`, `mobile`, `first_name`, `given_name`, `address` json object, `customer_ref_id`. One of `id`, `mobile`, `email` is `mandatory` field whereas others are `optional`. <br/><br/>`address` is `mandatory` to use `BNPL` payment method.|	`{ "email": "jane.doe@gmail.com" }` |
+| _items_ |	`optional` |	`array` Array of objects with each object including name, brand, category, sku, price, qty, total_price.<br/><br/>`mandatory` to use  `BNPL` payment method|
 | _metadata_ |	`optional` |	`json object` Key-Value pair that can be used to store additional information about the entity. e.g. `note`: `Force is with this order` | `{ "note": "Force is with this order" }` |
-
+| _expiry_date_ | `optional` |  `timestamp` The time stamp at which the order will expire. Please ensure that the value is in RFC3339 format | `"2022-03-29T10:00:00.000Z"` |
 </div>
 
 <div class = 'right-code'>
@@ -84,7 +84,8 @@ curl -X POST \
     "metadata": {
         "my-meta-key": "my-meta-value",
         "SettlementGroup": "BranchName"
-    }
+    },
+    "expiry_date": "2022-03-29T10:00:00.000Z"
 }'
 ```
 
@@ -186,6 +187,7 @@ Here is an example of success response
         "status": "started",
         "created_at": "2021-04-01T14:39:37.860426Z",
         "updated_at": "2021-04-01T14:39:37.860426Z",
+        "expiry_date": "2022-03-29T10:00:00Z",
         "metadata": {
             "my-meta-key": "my-meta-value",
             "SettlementGroup": "BranchName"
@@ -205,7 +207,7 @@ Here is an example of success response
 ```
 
 #### Error Response Code : 400
-Here is an example of error response for invalid request
+Here is an example error response for invalid request
 
 ```js
 {
@@ -217,6 +219,16 @@ Here is an example of error response for invalid request
             "message": "Please provide valid order data"
         }
     ]
+}
+```
+
+#### Error Response Code : 401
+Here is an example error response for unauthorized access
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
 }
 ```
 

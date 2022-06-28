@@ -1,0 +1,258 @@
+---
+id: patch-one
+title: Virtual Accounts Patch By ID API
+sidebar_label: Virtual Accounts Patch by ID API
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+
+The following endpoint is used to override Expiry Time of a single Virtual Account.
+It can either expire a VA(set `expiry_minutes` to `0`) or override the expiry time.
+
+<url patch=""><div class="ib">/payments/virtual-accounts/:id</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+
+### Path parameters
+
+| Field             | is required? | Description      |
+| ---------------- | --------------- | --------------------------------------------- |
+| *id*          | `mandatory`  | `integer` Unique identifier of the Virtual Account to be retrieved |
+
+
+### Request parameters
+
+| Field             | is required? | Description      | Example |
+| ---------------- | --------------- | --------------------------------------------- | ------ |
+| *expiry_minutes* | `optional` | `integer` Number of minutes left till expiry from now. Set to 0 to expire VA | `10000`  | 
+| *min_amount* | `optional` | `integer` Modify minimum amount which can be paid to an open VA | `10000`  | 
+| *max_amount* | `optional` | `integer` Modify maximum amount which can be paid to an open VA | `10000`  | 
+| *amount* | `optional` | `integer` Modify maximum amount which can be paid to a closed VA | `10000`  | 
+| *is_disabled* | `optional` | `boolean` Modify enabling/disabling payments to a VA while still reserving it | `true`  | 
+| *va_ref_id* | `optional` | `string` Modify a reference ID which the merchant wants to use for a specific VA | `VA_XYZ_1234` |
+
+
+
+## Error Codes
+
+| Code | Description  |
+|-----------|---------------------------|
+| DPAY_CANNOT_PATCH_PAID_VA |                  cannot patch paid va |
+| DPAY_PATCHING_VA_NOT_SUPPORTED |             patching va not supported |
+| DPAY_INTERNAL_ERROR |             `an unclassified error` |
+| DPAY_INVALID_REQUEST | `an error in form fields` |
+| DPAY_UNAUTHORIZED_ACCESS | `an unauthorized access error` |
+
+
+
+</div>
+
+<div class = 'right-code'>
+
+### Sample Request
+
+<MultiCodeBlock>
+
+```bash
+curl --location --request PATCH 'https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184' \
+--header 'Authorization: [Base64({Your_Server_Key}:)]' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "expiry_minutes": 1440,
+    "min_amount": 11000,
+    "max_amount": 13000,
+    "amount": 123456,
+    "is_disabled": true,
+    "va_ref_id": "1234412"
+}'
+```
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+payload = json.dumps({
+  "expiry_minutes": 1440,
+  "min_amount": 11000,
+  "max_amount": 13000,
+  "amount": 123456,
+  "is_disabled": True,
+  "va_ref_id": "1234412"
+})
+headers = {
+  'Authorization': '[Base64({Your_Server_Key}:)]',
+  'Content-Type': 'application/json'
+}
+conn.request("PATCH", "/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient().newBuilder()
+  .build();
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\n    \"expiry_minutes\": 1440,\n    \"min_amount\": 11000,\n    \"max_amount\": 13000,\n    \"amount\": 123456,\n    \"is_disabled\": true,\n    \"va_ref_id\": \"1234412\"\n}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184")
+  .method("PATCH", body)
+  .addHeader("Authorization", "[Base64({Your_Server_Key}:)]")
+  .addHeader("Content-Type", "application/json")
+  .build();
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require('request');
+var options = {
+  'method': 'PATCH',
+  'url': 'https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184',
+  'headers': {
+    'Authorization': '[Base64({Your_Server_Key}:)]',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    "expiry_minutes": 1440,
+    "min_amount": 11000,
+    "max_amount": 13000,
+    "amount": 123456,
+    "is_disabled": true,
+    "va_ref_id": "1234412"
+  })
+
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+
+```
+
+```ruby
+require "uri"
+require "json"
+require "net/http"
+
+url = URI("https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184")
+
+https = Net::HTTP.new(url.host, url.port)
+https.use_ssl = true
+
+request = Net::HTTP::Patch.new(url)
+request["Authorization"] = "[Base64({Your_Server_Key}:)]"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({
+  "expiry_minutes": 1440,
+  "min_amount": 11000,
+  "max_amount": 13000,
+  "amount": 123456,
+  "is_disabled": true,
+  "va_ref_id": "1234412"
+})
+
+response = https.request(request)
+puts response.read_body
+
+```
+
+
+</MultiCodeBlock>
+
+### Sample Response
+
+```json
+{
+    "data": {
+        "virtual_account": {
+            "id": "va_sample_EwCm3LrPqE5184",
+            "bank_code": "PERMATA",
+            "account_number": "88565004532522",
+            "name": "Ardi Hanan Durian",
+            "is_closed": true,
+            "amount": 123456,
+            "currency": "IDR",
+            "customer_id": "cus_akA2FwrR5B2217",
+            "is_sandbox": true,
+            "created_at": "2022-06-27T02:52:30.236901Z",
+            "expiry_at": "2022-06-29T05:40:59.795448Z",
+            "metadata": {},
+            "is_disabled": true,
+            "is_paid": false,
+            "is_reusable": true,
+            "min_amount": 50000,
+            "max_amount": null,
+            "va_ref_id": "1234412",
+            "auto_disable_after_payment": false
+        },
+        "virtual_account_status": "VirtualAccountSuccess",
+        "customer": {
+            "id": "cus_akA2FwrR5B2217",
+            "customer_ref_id": "",
+            "given_name": "",
+            "middle_name": "",
+            "sur_name": "",
+            "email": "p.ardi.h@gmail.com",
+            "mobile": "+628978678578"
+        }
+    }
+}
+```
+
+### Sample Error
+
+#### Form Errors
+
+The possible error status codes are: `400`
+
+
+```json
+{
+    "error_code": "DPAY_INVALID_REQUEST",
+    "request_id": "dp_Dzc8hMzkQU4826",
+    "errors": [
+        {
+            "field": "expiry_minutes",
+            "message": "can't be less than 0"
+        }
+    ]
+}
+```
+
+#### Authorization Errors
+
+Authorization errors are errors that occur during `authorization`. The status code returned is usually `401`
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
+#### Other Errors
+
+The possible error status codes are: `404`, `500`
+
+```json
+{
+    "error": "sql: no rows in result set",
+    "error_code": "DPAY_VA_NOT_FOUND",
+    "request_id": "dp_d3HX9S5W0r4989"
+}
+```
+
+</div>
+
+</div>

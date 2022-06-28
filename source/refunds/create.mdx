@@ -158,12 +158,43 @@ Here is an example of success response
 }
 ```
 
-#### Error Response Code : 500
-Here is an example of error response for invalid request
+#### Error Response Code : 400
+Here is an example error response for invalid request
 
 ```js
 {
-    "error": "error creating refund"
+    "error": "error reading request body",
+    "error_code": "DPAY_INTERNAL_ERROR",
+}
+```
+
+#### Error Response Code : 401
+Here is an example error response for unauthorized access
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
+#### Error Response Code : 403
+Here is an example error response for invalid request
+
+```js
+{
+    "error": "refund amount exceed",
+    "error_code": "DPAY_REFUND_AMOUNT_EXCEEDED"
+}
+```
+
+#### Error Response Code : 500
+Here is an example error response for internal server error
+
+```js
+{
+    "error": "error creating refund",
+    "error_code": "DPAY_INTERNAL_ERROR"
 }
 ```
 

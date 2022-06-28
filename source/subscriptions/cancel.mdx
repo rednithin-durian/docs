@@ -11,7 +11,7 @@ import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 
 The following endpoint cancels a single Subscription
 
-<url get = ''><div class = 'ib'>/subscriptions/:id/cancel</div></url>
+<url delete = ''><div class = 'ib'>/subscriptions/:id/cancel</div></url>
 
 </div>
 
@@ -128,8 +128,18 @@ Here is an example of success response
 }
 ```
 
+#### Error Response Code : 401
+Here is an example error response for unauthorized access
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
 #### Error Response Code : 404
-Here is an example of error response for invalid request
+Here is an example error response for resource not found
 
 ```js
 {

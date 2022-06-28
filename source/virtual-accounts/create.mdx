@@ -1,0 +1,327 @@
+---
+id: create
+title: Virtual Accounts Create API
+sidebar_label: Virtual Accounts Create API
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+
+The following endpoint creates a new virtual account
+<url post=""><div class="ib">/payments/virtual-accounts</div></url>
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+### Request parameters
+Following are the parameters to be sent in the request body:
+
+| Field             | is required? | Description      |   Example  | 
+| ---------------- | ------------ | ---------------- | ---------- |
+| *bank_code*          | `mandatory`  | `string` The bank code for the Virtual Account | `BRI`, `BCA`, `MANDIRI`, `PERMATA`, `CIMB` |
+| *name*          | `mandatory`  | `string` The name of virtual account | "John's Virtual Account" |
+| *is_closed* | `mandatory`  | `boolean` Whether account can accept open(any amount) or closed(specific amount) | `true` or `false`(default) |
+| *amount* | `optional`  | `string` specify amount to be paid to va when `is_closed=true` | `12000.12` |
+| *customer* | `mandatory` | `json object` with fields (`id`, `email`, `mobile`, `given_name`). One of (`id`, `mobile`, `email`) is mandatory field and `given_name` is mandatory. | ```{ "given_name": "Ardi Hanan", "mobile": "+6288888888", "email": "ardi@gmail.com" }``` |
+| *expiry_minutes* | `optional` | `integer (default for is_reusable=true:1440 and is_reusable=false:15768000)` number of minutes left till expiry from now maximum(15768000) | `10000`  | 
+| *account_suffix* | `optional` | `string` account suffix for the VA, if not specified a random suffix will be used to generate `account_number` | `1234` |
+| *is_reusable* | `optional` | `boolean (default: true)` whether multiple payments can be used for a particular VA | `true` |
+| *min_amount* | `optional` | `number (default: nil)` minimum amount to be paid to a VA in the case of `is_closed=false` | `10000` |
+| *max_amount* | `optional` | `number (default: nil)` maximum amount which can be paid to a VA in the case of `is_closed=false` | `20000` |
+| *va_ref_id* | `optional` | `string (default: "")` a reference ID which the merchant wants to use for a specific VA | `VA_XYZ_1234` |
+| *auto_disable_after_payment* | `optional` | `boolean (default: false)` disable a reusable VA temporariliy after a payment. Patch API can be used to enable it again after changing some parameters  | `true` |
+
+
+The following table contains `prefixes` for each `bank` in `sandbox` mode:
+
+| Bank Code | Bank Prefixes  |
+|-----------|---------------------------|
+| MANDIRI | 890229004 |
+| BCA | 190061002 |
+| BRI | 123617005 |
+| PERMATA | 88565004 |
+| CIMB | 18991001 |
+
+
+The following table has the `maximum account number lengths` for each bank:
+
+| Bank Code | Max Length (Bank Prefix + Remaining Digits)  |
+|-----------|---------------------------|
+| MANDIRI | 16 |
+| BCA | 23 |
+| BRI | 18 |
+| PERMATA | 16 |
+| CIMB | 16 |
+
+### Error Codes
+
+| Code | Description  |
+|-----------|---------------------------|
+| DPAY_STATIC_VA_NOT_SUPPORTED  |               static va not supported |
+| DPAY_STATIC_CLOSED_VA_NOT_SUPPORTED |         static va (closed) not supported |
+| DPAY_DYNAMIC_OPEN_VA_NOT_SUPPORTED |          dynamic va (open) not supported |
+| DPAY_MIN_MAX_AMOUNT_NOT_SUPPORTED |           setting min_amount and max_amount not supported |
+| DPAY_STATIC_VA_EXPIRY_MINUTES_NOT_SUPPORTED |  static va (expiry_minutes) not supported |
+| DPAY_STATIC_VA_AUTO_DISABLING_VA_NOT_SUPPORTED |static va: auto disabling va not supported |
+| DPAY_INTERNAL_ERROR |             `an unclassified error` |
+| DPAY_INVALID_REQUEST | `an error in form fields` |
+| DPAY_UNAUTHORIZED_ACCESS | `an unauthorized access error` |
+
+
+
+</div>
+
+<div class = 'right-code'>
+
+### Sample Request
+
+<MultiCodeBlock>
+
+```bash
+curl --location --request POST 'https://api.durianpay.id/v1/payments/virtual-accounts' \
+--header 'Authorization: [Base64({Your_Server_Key}:)]' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "bank_code": "PERMATA",
+    "name": "Ardi Hanan Durian",
+    "is_closed": true,
+    "amount": "12333",
+    "customer": {
+        "given_name": "Ardi Hanan",
+        "mobile": "+6288888888",
+        "email": "ardi@gmail.com"
+    },
+    "expiry_minutes": 14400,
+    "account_suffix": "123456",
+    "is_reusable": true,
+    "va_ref_id": "1234",
+    "min_amount": 10000,
+    "max_amount": 15000,
+    "auto_disable_after_payment": true
+}'
+```
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+payload = json.dumps({
+  "bank_code": "PERMATA",
+  "name": "Ardi Hanan Durian",
+  "is_closed": True,
+  "amount": "12333",
+  "customer": {
+    "given_name": "Ardi Hanan",
+    "mobile": "+6288888888",
+    "email": "ardi@gmail.com"
+  },
+  "expiry_minutes": 14400,
+  "account_suffix": "123456",
+  "is_reusable": True,
+  "va_ref_id": "1234",
+  "min_amount": 10000,
+  "max_amount": 15000,
+  "auto_disable_after_payment": True
+})
+headers = {
+  'Authorization': '[Base64({Your_Server_Key}:)]',
+  'Content-Type': 'application/json'
+}
+conn.request("POST", "/v1/payments/virtual-accounts", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient().newBuilder()
+  .build();
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\n    \"bank_code\": \"PERMATA\",\n    \"name\": \"Ardi Hanan Durian\",\n    \"is_closed\": true,\n    \"amount\": \"12333\",\n    \"customer\": {\n        \"given_name\": \"Ardi Hanan\",\n        \"mobile\": \"+6288888888\",\n        \"email\": \"ardi@gmail.com\"\n    },\n    \"expiry_minutes\": 14400,\n    \"account_suffix\": \"123456\",\n    \"is_reusable\": true,\n    \"va_ref_id\": \"1234\",\n    \"min_amount\": 10000,\n    \"max_amount\": 15000,\n    \"auto_disable_after_payment\": true\n}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/virtual-accounts")
+  .method("POST", body)
+  .addHeader("Authorization", "[Base64({Your_Server_Key}:)]")
+  .addHeader("Content-Type", "application/json")
+  .build();
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require('request');
+var options = {
+  'method': 'POST',
+  'url': 'https://api.durianpay.id/v1/payments/virtual-accounts',
+  'headers': {
+    'Authorization': '[Base64({Your_Server_Key}:)]',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    "bank_code": "PERMATA",
+    "name": "Ardi Hanan Durian",
+    "is_closed": true,
+    "amount": "12333",
+    "customer": {
+      "given_name": "Ardi Hanan",
+      "mobile": "+6288888888",
+      "email": "ardi@gmail.com"
+    },
+    "expiry_minutes": 14400,
+    "account_suffix": "123456",
+    "is_reusable": true,
+    "va_ref_id": "1234",
+    "min_amount": 10000,
+    "max_amount": 15000,
+    "auto_disable_after_payment": true
+  })
+
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+
+```
+
+```ruby
+require "uri"
+require "json"
+require "net/http"
+
+url = URI("https://api.durianpay.id/v1/payments/virtual-accounts")
+
+https = Net::HTTP.new(url.host, url.port)
+https.use_ssl = true
+
+request = Net::HTTP::Post.new(url)
+request["Authorization"] = "[Base64({Your_Server_Key}:)]"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({
+  "bank_code": "PERMATA",
+  "name": "Ardi Hanan Durian",
+  "is_closed": true,
+  "amount": "12333",
+  "customer": {
+    "given_name": "Ardi Hanan",
+    "mobile": "+6288888888",
+    "email": "ardi@gmail.com"
+  },
+  "expiry_minutes": 14400,
+  "account_suffix": "123456",
+  "is_reusable": true,
+  "va_ref_id": "1234",
+  "min_amount": 10000,
+  "max_amount": 15000,
+  "auto_disable_after_payment": true
+})
+
+response = https.request(request)
+puts response.read_body
+
+```
+
+</MultiCodeBlock>
+
+### Sample Response
+
+The `status code` returned would be `201`.
+
+```json
+{
+    "data": {
+        "customer_id": "cus_CtZ8r2GOvq7341",
+        "virtual_account": {
+            "id": "va_sample_pWM5k3BUI63935",
+            "bank_code": "PERMATA",
+            "account_number": "88565004123456",
+            "name": "Ardi Hanan Durian",
+            "is_closed": true,
+            "amount": 12333,
+            "currency": "IDR",
+            "customer_id": "cus_CtZ8r2GOvq7341",
+            "is_sandbox": true,
+            "created_at": "2022-06-28T10:38:54.350418Z",
+            "expiry_at": "2022-07-08T05:08:54.353053Z",
+            "metadata": {},
+            "is_disabled": false,
+            "is_paid": false,
+            "is_reusable": true,
+            "min_amount": null,
+            "max_amount": null,
+            "va_ref_id": "1234",
+            "auto_disable_after_payment": true
+        }
+    }
+}
+```
+
+### Sample Error
+
+#### Form Errors
+
+Form errors are those which occur `during form validation` & contain an `errors array` and are thrown with status code `400`.
+
+```json
+{
+    "error_code": "DPAY_INVALID_REQUEST",
+    "request_id": "dp_JSN8xJULZ39583",
+    "errors": [
+        {
+            "field": "bank_code",
+            "message": "can't be blank"
+        },
+        {
+            "field": "name",
+            "message": "can't be blank"
+        },
+        {
+            "field": "customer",
+            "message": "can't be blank needs either ID, Email or Mobile"
+        },
+        {
+            "field": "customer.given_name",
+            "message": "given name cannot be empty"
+        },
+        {
+            "field": "expiry_minutes",
+            "message": "can't be less than equal to 0"
+        }
+    ]
+}
+```
+
+#### Authorization Errors
+
+Authorization errors are errors that occur during `authorization`. The status code returned is usually `401`
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
+#### Other Errors
+
+Other errors are `failures` which occur `after form validation`. The status codes codes are usually `400` & `500`
+
+
+```json
+{
+    "error": "pq: VA Already Created",
+    "error_code": "DPAY_INTERNAL_ERROR",
+    "request_id": "dp_QMPB7IO53p6517"
+}
+```
+
+</div>
+
+</div>

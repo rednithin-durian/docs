@@ -140,12 +140,23 @@ Here is an example of success response
 }
 ```
 
+#### Error Response Code : 401
+Here is an example error response for unauthorized access
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
 #### Error Response Code : 404
-Here is an example of error response for invalid request
+Here is an example error response for resource not found
 
 ```js
 {
     "error": "settlement does not exists"
+    "error_code": "DPAY_SETTLEMENT_NOT_FOUND"
 }
 ```
 

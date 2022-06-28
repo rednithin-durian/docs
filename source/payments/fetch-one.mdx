@@ -29,7 +29,7 @@ The following endpoint retrieves the details of a single Payment
 
 | Field |	is required? |	Description |
 | ------- | ------------- | ------------ |
-| _expand_ | 	`optional` |	`integer` Used to retrieve additional information about the Payment. Supported values are: `customer`, `order`. Example: `/payments/pay_A1B1C1D1234?expand[]=customer&expand[]=order` |
+| _expand_ | 	`optional` |	`integer` Used to retrieve additional information about the Payment. Supported values are: `customer`, `order`. Example: `/payments/pay_A1B1C1D1234?expand=customer&expand=order` |
 
 </div>
 
@@ -136,12 +136,23 @@ Here is an example of success response
 }
 ```
 
+#### Error Response Code : 401
+Here is an example error response for unauthorized access
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
 #### Error Response Code : 500
-Here is an example of error response for invalid request
+Here is an example error response for internal server error
 
 ```js
 {
     "error": "error getting payment",
+    "error_code": "DPAY_INTERNAL_ERROR"
 }
 ```
 

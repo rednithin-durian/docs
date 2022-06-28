@@ -143,6 +143,17 @@ puts response.read_body
 }
 ```
 
+#### Authorization Errors
+
+Authorization errors are errors that occur during `authorization`. The status code returned is usually `401`
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
 ### Sample Error
 
 The possible error status codes are: `404`, `500`

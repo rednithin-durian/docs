@@ -17,6 +17,7 @@ export default function SEO({
       <meta property="og:title" content={title} />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:description" content={description} />
+      <meta property="og:image" content="https://res.cloudinary.com/dx26jwl31/image/upload/v1649840423/logo1200_630_looyk3.png"/>
       <meta name="twitter:card" content={twitterCard} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />

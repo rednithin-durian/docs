@@ -35,7 +35,7 @@ The following endpoint retrieves the details of a single Order
 
 | Field |	is required? |	Description |
 | ------ | ------------- | ------------- |
-| _expand_ |	`optional` |	`integer` Used to retrieve additional information about the Order. Supported values are: `customer`, `payments`. Example: `/orders/ord_A1B1C1D1234?expand[]=customer&expand[]=payments` |
+| _expand_ |	`optional` |	`integer` Used to retrieve additional information about the Order. Supported values are: `customer`, `payments`. Example: `/orders/ord_A1B1C1D1234?expand=customer&expand=payments` |
 
 </div>
 
@@ -144,13 +144,33 @@ Here is an example of success response
 }
 ```
 
+#### Error Response Code : 401
+Here is an example error response for unauthorized access
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
 #### Error Response Code : 404
-Here is an example of error response for invalid request
+Here is an example error response for resource not found
 
 ```js
 {
     "error": "order does not exists",
     "error_code": "DPAY_ORDER_NOT_FOUND",
+}
+```
+
+#### Error Response Code : 500
+Here is an example error response for internal server error
+
+```js
+{
+    "error": "error getting orders",
+    "error_code": "DPAY_INTERNAL_ERROR"
 }
 ```
 

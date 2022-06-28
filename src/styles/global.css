@@ -92,13 +92,19 @@ aside[class*="-Aside"] > ul > li {
 }
 
 .sidebar div[class*="-CategoryTitle"] {
-	font-size: 13px;
+	font-size: 14px;
+	text-transform: none;
+	font-weight: normal;
+	letter-spacing: 0.1em;
+	color: rgb(100, 100, 100);
+	padding: 10px 0;
 }
-
-.sidebar li[class*="-StyledListItem"] a.active {
-	background-color: #fff;
+.sidebar div[class*="-CategoryTitle"]:hover {
+	color: #3f20ba;
 }
-
+.sidebar ul[class*="-StyledList"] {
+	margin-bottom: 10px;
+}
 .header-elements {
 	margin-left: auto;
 	vertical-align: middle;
@@ -337,10 +343,6 @@ header{
 
 .gatsby-highlight  > div{
 	border: none !important;
-}
-
-.sidebar li a {
-	font-size: 0.8rem;
 }
 
 .right-component{

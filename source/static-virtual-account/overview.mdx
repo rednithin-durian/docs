@@ -1,0 +1,35 @@
+---
+title: Static VA Overview
+---
+import {Message} from 'theme-ui';
+
+<div class = 'pl-20 pr-20'>
+
+> This version of the API is deprecated and will be removed soon please check [this section](https://durianpay.id/docs/api/virtual-accounts/overview/) for updated API.
+
+Durianpay enables you to create Static Virtual Accounts for each of your customers,
+so that they can make multiple payments using the same Virtual Account Number.
+
+## Webhook Changes
+
+We will be sending the following `payload` in the `metadata` section of the body for the webhooks listed below:
+- `order.created`
+- `order.completed`
+- `payment.completed`
+- `payment.failed`
+
+
+```json
+{
+  ...
+  "metadata": {
+    "static_va_account_number": "123617005010",
+    "static_va_id": "va_Yv9Jm7iEkE2923"
+  }
+  ...
+}
+```
+
+> Refer to [this section](https://durianpay.id/docs/afterpayments/webhooks/) for more details on webhooks
+
+</div>

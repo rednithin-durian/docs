@@ -17,7 +17,7 @@ The following endpoint charges the payment for all payment methods
 
 | Field |	is required? |	Description |
 | ----- | ---------------- | ------------ |
-| _type_ |	`mandatory` |	`string` type of payment, possible values - `"VA"`, `"EWALLET"`, `"CARD"`, `"RETAILSTORE"`, `"ONLINE_BANKING"`, `"QRIS"` |
+| _type_ |	`mandatory` |	`string` type of payment, possible values - `"VA"`, `"EWALLET"`, `"CARD"`, `"RETAILSTORE"`, `"ONLINE_BANKING"`, `"QRIS"`, `"BNPL"` |
 | _request_ |	`mandatory` |	`object` The payload object depending on the payment type |
 
 </div>
@@ -40,7 +40,7 @@ The following endpoint charges the payment for all payment methods
 | Field |	is required? |	Description |
 | ----- | ---------------- | ------------ |
 | _order_id_ |	`mandatory` |	`string` The id returned from create order api |
-| _bank_code_ |	`mandatory` |	`string`  Bank codes for the relevant bank. Available banks: `BCA`, `BNI`, `BRI`, `MANDIRI`, `PERMATA`, `CIMB`, `BTPN`, `SAHABAT_SAMPOERNA`, `SINARMAS`, `MAYBANK`, `DANAMON`, `OTHERS` |
+| _bank_code_ |	`mandatory` |	`string`  Bank codes for the relevant bank. Available banks: `BCA`, `BNI`, `BRI`, `MANDIRI`, `PERMATA`, `CIMB`, `BTPN`, `SAHABAT_SAMPOERNA`, `SINARMAS`, `MAYBANK`, `SYARIAH`, `DANAMON`, `OTHERS` |
 | _name_ |	`mandatory` |	`string` Name that should appear in ATM |
 | _amount_ |	`mandatory` |	`string` Payment amount |
 
@@ -910,6 +910,313 @@ puts response.read_body
 
  <div class = 'left-side'>
 
+ ## CARD
+
+**Request Payload**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _type_ |	`mandatory` |	`string` `"CARD"` |
+| _request_ |	`mandatory` |	`object` The payload object depending on the payment type |
+
+**Request object**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _order_id_ |	`mandatory` |	`string` The id returned from create order api |
+| _amount_ |	`optional` |	`string` Payment amount |
+| _customer_info_ |	`optional` |	`string` Customer Info |
+
+**Response Payload**
+
+| Field |	Description |
+| ----- | ------------ |
+| _payment_id_ |	`string` Unique id for payment object |
+| _order_id_ |	`string` The id returned from create order api |
+| _paid_amount_ |	`string` Payment amount |
+| _status_ |	`string` Payment status|
+| _checkout_url_ |	`string` Redirect url which merchant should open to move on to the payment page |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example Request for CARD**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/payments/charge \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "type": "CARD",
+    "request": {
+        "order_id": "ord_1EcWGI2xSs7216",
+        "amount": "10000.00",
+        "customer_info": {
+            "id": "cus_aGn5UD0m7F0994",
+            "email": "jude_kasper@koss.in",
+            "given_name": "Jude Kasper"
+        }
+    }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{\"type\":\"CARD\",\"request\":{\"order_id\":\"ord_1EcWGI2xSs7216\",\"amount\":\"10000.00\",\"customer_info\":{\"id\":\"cus_aGn5UD0m7F0994\",\"email\":\"jude_kasper@koss.in\",\"given_name\":\"JudeKasper\"}}}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/payments/charge", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType, "{\"type\":\"CARD\",\"request\":{\"order_id\":\"ord_1EcWGI2xSs7216\",\"amount\":\"10000.00\",\"customer_info\":{\"id\":\"cus_aGn5UD0m7F0994\",\"email\":\"jude_kasper@koss.in\",\"given_name\":\"JudeKasper\"}}}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/charge")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/payments/charge',
+  headers:
+   {
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '"{\"type\":\"CARD\",\"request\":{\"order_id\":\"ord_1EcWGI2xSs7216\",\"amount\":\"10000.00\",\"customer_info\":{\"id\":\"cus_aGn5UD0m7F0994\",\"email\":\"jude_kasper@koss.in\",\"given_name\":\"JudeKasper\"}}}"' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/charge")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{\"type\":\"CARD\",\"request\":{\"order_id\":\"ord_1EcWGI2xSs7216\",\"amount\":\"10000.00\",\"customer_info\":{\"id\":\"cus_aGn5UD0m7F0994\",\"email\":\"jude_kasper@koss.in\",\"given_name\":\"JudeKasper\"}}}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+**Response for CARD**
+
+```js
+{
+  "type": "CARD",
+  "response": {
+      "payment_id": "pay_1Ylb1r122v1860",
+      "order_id": "ord_sipQEaBnkX0407",
+      "payment_ref_id": "",
+      "token_id": "",
+      "status": "processing",
+      "paid_amount": "10000.00",
+      "metadata": {},
+      "checkout_url": "https://link.to/card-checkout-url"
+  }
+}
+ ```
+
+ </div>
+
+ </div>
+
+ <div class = 'full-side'>
+
+ <div class = 'left-side'>
+
+ ## Buy Now Pay Later (BNPL)
+
+**Request Payload**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _type_ |	`mandatory` |	`string` `"BNPL"` |
+| _request_ |	`mandatory` |	`object` The payload object depending on the payment type |
+
+**Request object**
+
+| Field |	is required? |	Description |
+| ----- | ---------------- | ------------ |
+| _order_id_ |	`mandatory` |	`string` The id returned from create order api |
+| _payment_method_unique_id_ |	`mandatory` |	`string`  Available values: `AKULAKU`,`INDODANA` |
+| _amount_ |	`mandatory` |	`string` Payment amount |
+| _customer_info_ |	`optional` |	`string` Customer Info |
+
+**Response payload**
+
+| Field |	Description |
+| ----- | ----------- |
+| _payment_id_ | `string` Unique id for payment object |
+| _order_id_ |  `string` The id returned from create order api  |
+| _redirect_url_ |  `string` Redirect url which merchant should open to move on to the payment page |
+| _paid_amount_ | `string` Payment amount |
+
+</div>
+
+<div class = 'right-code'>
+
+**Example Request for BNPL**
+
+<MultiCodeBlock>
+
+```bash
+curl -X POST \
+  https://api.durianpay.id/v1/payments/charge \
+  -H 'authorization: [Base64({Your_Server_Key}:)]' \
+  -H 'content-type: application/json' \
+  -d '{
+    "type": "BNPL",
+    "request": {
+        "order_id": "ord_1EcWGI2xSs7216",
+        "amount": "10000.00",
+        "payment_method_unique_id" : "AKULAKU"
+        "customer_info": {
+            "id": "cus_aGn5UD0m7F0994",
+            "email": "jude_kasper@koss.in",
+            "given_name": "Jude Kasper"
+        }
+    }
+}'
+```
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+
+payload = "{    \"type\": \"BNPL\",    \"request\": {       \"order_id\": \"ord_1EcWGI2xSs7216\",        \"amount\": \"10000.00\",        \"payment_method_unique_id\" : \"AKULAKU\"        \"customer_info\": {            \"id\": \"cus_aGn5UD0m7F0994\",            \"email\": \"jude_kasper@koss.in\",            \"given_name\": \"Jude Kasper\"        }    }}"
+
+headers = {
+    'content-type': "application/json",
+    'authorization': "[Base64({Your_Server_Key}:)]",
+    }
+
+conn.request("POST", "/v1/payments/charge", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient();
+
+MediaType mediaType = MediaType.parse("application/octet-stream");
+RequestBody body = RequestBody.create(mediaType,"{    \"type\": \"BNPL\",    \"request\": {       \"order_id\": \"ord_1EcWGI2xSs7216\",        \"amount\": \"10000.00\",        \"payment_method_unique_id\" : \"AKULAKU\"        \"customer_info\": {            \"id\": \"cus_aGn5UD0m7F0994\",            \"email\": \"jude_kasper@koss.in\",            \"given_name\": \"Jude Kasper\"        }    }}"
+);
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/charge")
+  .post(body)
+  .addHeader("content-type", "application/json")
+  .addHeader("authorization", "[Base64({Your_Server_Key}:)]")
+  .build();
+
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require("request");
+
+var options = { method: 'POST',
+  url: 'https://api.durianpay.id/v1/payments/charge',
+  headers: 
+   { 
+     authorization: '[Base64({Your_Server_Key}:)]',
+     'content-type': 'application/json' },
+  body: '{    \"type\": \"BNPL\",    \"request\": {       \"order_id\": \"ord_1EcWGI2xSs7216\",        \"amount\": \"10000.00\",        \"payment_method_unique_id\" : \"AKULAKU\"        \"customer_info\": {            \"id\": \"cus_aGn5UD0m7F0994\",            \"email\": \"jude_kasper@koss.in\",            \"given_name\": \"Jude Kasper\"        }    }}';
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.durianpay.id/v1/payments/charge")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Post.new(url)
+request["content-type"] = 'application/json'
+request["authorization"] = '[Base64({Your_Server_Key}:)]'
+request.body = "{    \"type\": \"BNPL\",    \"request\": {       \"order_id\": \"ord_1EcWGI2xSs7216\",        \"amount\": \"10000.00\",        \"payment_method_unique_id\" : \"AKULAKU\"        \"customer_info\": {            \"id\": \"cus_aGn5UD0m7F0994\",            \"email\": \"jude_kasper@koss.in\",            \"given_name\": \"Jude Kasper\"        }    }}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+</MultiCodeBlock>
+
+**Response for BNPL**
+
+```js
+{
+  "type": "BNPL",
+  "response": {
+    "payment_id": "pay_s2sSBlDSWv4167",
+    "order_id": "ord_ZSHipeBgUd4740",
+    "redirect_url": "https://redirect-url.com/"
+    "paid_amount": "80001.00",
+    "metadata":{},
+  }
+ }
+ ```
+
+ </div>
+
+ </div>
+
+ <div class = 'full-side'>
+
+ <div class = 'left-side'>
+
 ### Sandbox Mode
 To simulate the charge API flow in sandbox mode, merchants can use dp_test_XXXXXXXXX key. By default we will simulate the success scenario. If you want to simulate the failure scenario, you should use the sandbox_options json field in the request. This contains force_fail and delay_ms fields.
 
@@ -918,7 +1225,7 @@ To simulate the charge API flow in sandbox mode, merchants can use dp_test_XXXXX
 | _force_fail_ |	`bool` Make this field as true in the request if you want to simulate failure scenario. |
 | _delay_ms_ |	`integer` If you want to simulate a delay in making the payment as success or failed, give a value in milliseconds in this field in the request. |
 
->Note: Currently sandbox_options is supported for VA, E-Wallet and RetailStore.
+>Note: Currently sandbox_options is supported for VA, E-Wallet, RetailStore and BNPL.
  
 </div>
 

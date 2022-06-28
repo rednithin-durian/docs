@@ -158,7 +158,6 @@ puts response.read_body
 
 ### Sample Error
 
-
 #### Form/Params Errors
 
 The possible error status codes are: `400`
@@ -169,6 +168,16 @@ The possible error status codes are: `400`
 }
 ```
 
+#### Authorization Errors
+
+Authorization errors are errors that occur during `authorization`. The status code returned is usually `401`
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
 
 #### Other Errors
 

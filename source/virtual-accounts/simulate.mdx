@@ -1,0 +1,198 @@
+---
+id: create
+title: Virtual Accounts Payment Simulate API
+sidebar_label: Virtual Accounts Payment Simulate API
+---
+
+<div class = 'right-component'></div>
+
+<div class = 'left-side'>
+
+import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
+
+
+The following endpoint to simulate a payment to a virtual account
+<url post=""><div class="ib">/payments/virtual-accounts/simulate</div></url>
+
+> This endpoint only works in sandbox mode using API Key which starts with `dp_test`
+
+</div>
+
+<div class = 'full-side'>
+
+<div class = 'left-side'>
+
+### Request parameters
+Following are the parameters to be sent in the request body:
+
+| Field             | is required? | Description      |   Example  | 
+| :---------------- | ------------ | ---------------- | ---------- |
+| *account_number* | `mandatory` | `string` the account number to which money should be sent | `1236170055`
+| *amount* | `mandatory` | `string` amount in `IDR` to be sent to account  | `12345.55`
+
+</div>
+
+<div class = 'right-code'>
+
+### Sample Request
+
+<MultiCodeBlock>
+
+```bash
+curl --location --request POST 'https://api.durianpay.id/v1/payments/virtual-accounts/simulate' \
+--header 'Authorization: [Base64({Your_Server_Key}:)]' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "amount": "12333",
+    "account_number": "88565004532522",
+    "force_fail": false
+}'
+```
+
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.durianpay.id")
+payload = json.dumps({
+  "amount": "12333",
+  "account_number": "88565004532522",
+  "force_fail": False
+})
+headers = {
+  'Authorization': '[Base64({Your_Server_Key}:)]',
+  'Content-Type': 'application/json'
+}
+conn.request("POST", "/v1/payments/virtual-accounts/simulate", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+```java
+OkHttpClient client = new OkHttpClient().newBuilder()
+  .build();
+MediaType mediaType = MediaType.parse("application/json");
+RequestBody body = RequestBody.create(mediaType, "{\n    \"amount\": \"12333\",\n    \"account_number\": \"88565004532522\",\n    \"force_fail\": false\n}");
+Request request = new Request.Builder()
+  .url("https://api.durianpay.id/v1/payments/virtual-accounts/simulate")
+  .method("POST", body)
+  .addHeader("Authorization", "[Base64({Your_Server_Key}:)]")
+  .addHeader("Content-Type", "application/json")
+  .build();
+Response response = client.newCall(request).execute();
+```
+
+```js
+var request = require('request');
+var options = {
+  'method': 'POST',
+  'url': 'https://api.durianpay.id/v1/payments/virtual-accounts/simulate',
+  'headers': {
+    'Authorization': '[Base64({Your_Server_Key}:)]',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    "amount": "12333",
+    "account_number": "88565004532522",
+    "force_fail": false
+  })
+
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+
+```
+
+```ruby
+require "uri"
+require "json"
+require "net/http"
+
+url = URI("https://api.durianpay.id/v1/payments/virtual-accounts/simulate")
+
+https = Net::HTTP.new(url.host, url.port)
+https.use_ssl = true
+
+request = Net::HTTP::Post.new(url)
+request["Authorization"] = "[Base64({Your_Server_Key}:)]"
+request["Content-Type"] = "application/json"
+request.body = JSON.dump({
+  "amount": "12333",
+  "account_number": "88565004532522",
+  "force_fail": false
+})
+
+response = https.request(request)
+puts response.read_body
+
+```
+
+</MultiCodeBlock>
+
+### Sample Response
+
+The `status code` returned would be `200`.
+
+```json
+{
+    "data": {
+        "status": "Payment Successful"
+    }
+}
+```
+
+### Sample Error
+
+#### Form Errors
+
+Form errors are those which occur `during form validation` & contain an `errors array` and are thrown with status code `400`.
+
+```json
+{
+    "error_code": "DPAY_INVALID_REQUEST",
+    "request_id": "dp_JSN8xJULZ39583",
+    "errors": [
+        {
+            "field": "account_number",
+            "message": "can't be blank"
+        },
+        {
+            "field": "amount",
+            "message": "can't be blank"
+        }
+    ]
+}
+```
+
+#### Authorization Errors
+
+Authorization errors are errors that occur during `authorization`. The status code returned is usually `401`
+
+```js
+{
+    "error": "invalid Authorization header in request",
+    "error_code": "DPAY_UNAUTHORIZED_ACCESS"
+}
+```
+
+#### Other Errors
+
+Other errors are `failures` which occur `after form validation`. The status codes codes are usually `422`.
+
+
+```json
+{
+    "data": {
+        "status": "Payment Unsuccessful",
+        "reason": "VA Not found"
+    }
+}
+```
+
+</div>
+
+</div>
