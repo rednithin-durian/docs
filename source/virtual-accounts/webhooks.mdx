@@ -1,0 +1,37 @@
+---
+title: Virtual Accounts Webhooks
+---
+import {Message} from 'theme-ui';
+
+<div class = 'pl-20 pr-20'>
+
+We will be sending the following `payload` in the `metadata` section of the body for the webhooks listed below:
+- `order.created`
+- `order.completed`
+- `payment.completed`
+- `payment.failed`
+
+
+```json
+{
+  ...
+  "metadata": {
+    "static_va_account_number": "123617005010", // deprecated: will be removed soon
+    "static_va_id": "va_Yv9Jm7iEkE2923", // deprecated: will be removed soon
+    "static_va_reference_id": "va_inq_1234", // deprecated: will be removed soon
+
+    "va_account_number": "123617005010",
+    "va_id": "va_Yv9Jm7iEkE2923",
+    "va_dpay_reference_id": "va_inq_1234",
+  }
+  ...
+}
+```
+
+We will also be sending the `va_ref_id` specified by the merchant in the
+- `order_ref_id` field in the `order.created` and `order.completed` webhook
+- `payment_ref_id` field in the `payment.completed` and `payment.failed` webhook
+
+> Refer to [this section](https://durianpay.id/docs/afterpayments/webhooks/) for more details on webhooks
+
+</div>

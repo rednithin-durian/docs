@@ -109,6 +109,7 @@ module.exports = {
           ],
           'Virtual Accounts API (beta)': [
             'virtual-accounts/overview',
+            'virtual-accounts/webhooks',
             'virtual-accounts/create',
             'virtual-accounts/fetch',
             'virtual-accounts/fetch-one',

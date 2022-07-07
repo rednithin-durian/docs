@@ -25,7 +25,7 @@ Following are the parameters to be sent in the request body:
 
 | Field             | is required? | Description      |
 | ---------------- | ------------ | ---------------- | 
-| *bank_code*          | `mandatory`  | **Type:** `string` <br /><br /> The bank code for the Virtual Account <br /><br/> **Example:** `"BRI"`, `"BCA"`, `"MANDIRI"`, `"PERMATA"`, `"CIMB"` |
+| *bank_code*          | `mandatory`  | **Type:** `string` <br /><br /> The bank code for the Virtual Account <br /><br/> **Supported Bank Codes:** `"BRI"`, `"BCA"`, `"MANDIRI"`, `"PERMATA"`, `"CIMB"` |
 | *name*          | `mandatory`  |  **Type:** `string` <br /><br /> The name of virtual account <br /><br/> **Example:** "John's Virtual Account" |
 | *is_closed* | `optional`  |  **Type:** `boolean (default: false)` <br /><br /> Whether account can accept open(any amount) or closed(specific amount) <br /><br/> **Example:** `true` or `false` |
 | *amount* | `optional`  |  **Type:** `string` <br /><br /> Specify amount to be paid to va when `is_closed=true` <br /><br/> **Example:** `"12000.12"` |
