@@ -14,7 +14,7 @@ import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 The following endpoint is used to override Expiry Time of a single Virtual Account.
 It can either expire a VA(set `expiry_minutes` to `0`) or override the expiry time.
 
-<url patch=""><div class="ib">/payments/virtual-accounts/:id</div></url>
+<url patch=""><div class="ib">/payments/va/:id</div></url>
 
 </div>
 
@@ -64,7 +64,7 @@ It can either expire a VA(set `expiry_minutes` to `0`) or override the expiry ti
 <MultiCodeBlock>
 
 ```bash
-curl --location --request PATCH 'https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184' \
+curl --location --request PATCH 'https://api.durianpay.id/v1/payments/va/va_sample_EwCm3LrPqE5184' \
 --header 'Authorization: [Base64({Your_Server_Key}:)]' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -94,7 +94,7 @@ headers = {
   'Authorization': '[Base64({Your_Server_Key}:)]',
   'Content-Type': 'application/json'
 }
-conn.request("PATCH", "/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184", payload, headers)
+conn.request("PATCH", "/v1/payments/va/va_sample_EwCm3LrPqE5184", payload, headers)
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))
@@ -106,7 +106,7 @@ OkHttpClient client = new OkHttpClient().newBuilder()
 MediaType mediaType = MediaType.parse("application/json");
 RequestBody body = RequestBody.create(mediaType, "{\n    \"expiry_minutes\": 1440,\n    \"min_amount\": 11000,\n    \"max_amount\": 13000,\n    \"amount\": 123456,\n    \"is_disabled\": true,\n    \"va_ref_id\": \"1234412\"\n}");
 Request request = new Request.Builder()
-  .url("https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184")
+  .url("https://api.durianpay.id/v1/payments/va/va_sample_EwCm3LrPqE5184")
   .method("PATCH", body)
   .addHeader("Authorization", "[Base64({Your_Server_Key}:)]")
   .addHeader("Content-Type", "application/json")
@@ -118,7 +118,7 @@ Response response = client.newCall(request).execute();
 var request = require('request');
 var options = {
   'method': 'PATCH',
-  'url': 'https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184',
+  'url': 'https://api.durianpay.id/v1/payments/va/va_sample_EwCm3LrPqE5184',
   'headers': {
     'Authorization': '[Base64({Your_Server_Key}:)]',
     'Content-Type': 'application/json'
@@ -145,7 +145,7 @@ require "uri"
 require "json"
 require "net/http"
 
-url = URI("https://api.durianpay.id/v1/payments/virtual-accounts/va_sample_EwCm3LrPqE5184")
+url = URI("https://api.durianpay.id/v1/payments/va/va_sample_EwCm3LrPqE5184")
 
 https = Net::HTTP.new(url.host, url.port)
 https.use_ssl = true

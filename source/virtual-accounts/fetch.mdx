@@ -12,7 +12,7 @@ import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 
 
 The following endpoint retrieves the details of all Virtual Accounts created
-<url get=""><div class="ib">/payments/virtual-accounts</div></url>
+<url get=""><div class="ib">/payments/va</div></url>
 
 </div>
 
@@ -41,7 +41,7 @@ Following are the parameters to be sent in the request body:
 <MultiCodeBlock>
 
 ```bash
-curl --location --request GET 'https://api.durianpay.id/v1/payments/virtual-accounts?limit=2&skip=2' \
+curl --location --request GET 'https://api.durianpay.id/v1/payments/va?limit=2&skip=2' \
 --header 'Authorization: [Base64({Your_Server_Key}:)]'
 ```
 
@@ -53,7 +53,7 @@ payload = ''
 headers = {
   'Authorization': '[Base64({Your_Server_Key}:)]'
 }
-conn.request("GET", "/v1/payments/virtual-accounts?limit=2&skip=2", payload, headers)
+conn.request("GET", "/v1/payments/va?limit=2&skip=2", payload, headers)
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))
@@ -65,7 +65,7 @@ OkHttpClient client = new OkHttpClient().newBuilder()
 MediaType mediaType = MediaType.parse("text/plain");
 RequestBody body = RequestBody.create(mediaType, "");
 Request request = new Request.Builder()
-  .url("https://api.durianpay.id/v1/payments/virtual-accounts?limit=2&skip=2")
+  .url("https://api.durianpay.id/v1/payments/va?limit=2&skip=2")
   .method("GET", body)
   .addHeader("Authorization", "[Base64({Your_Server_Key}:)]")
   .build();
@@ -76,7 +76,7 @@ Response response = client.newCall(request).execute();
 var request = require('request');
 var options = {
   'method': 'GET',
-  'url': 'https://api.durianpay.id/v1/payments/virtual-accounts?limit=2&skip=2',
+  'url': 'https://api.durianpay.id/v1/payments/va?limit=2&skip=2',
   'headers': {
     'Authorization': '[Base64({Your_Server_Key}:)]'
   }
@@ -92,7 +92,7 @@ request(options, function (error, response) {
 require "uri"
 require "net/http"
 
-url = URI("https://api.durianpay.id/v1/payments/virtual-accounts?limit=2&skip=2")
+url = URI("https://api.durianpay.id/v1/payments/va?limit=2&skip=2")
 
 https = Net::HTTP.new(url.host, url.port)
 https.use_ssl = true

@@ -12,7 +12,7 @@ import {MultiCodeBlock} from 'gatsby-theme-apollo-docs';
 
 
 The following endpoint to simulate a payment to a virtual account
-<url post=""><div class="ib">/payments/virtual-accounts/simulate</div></url>
+<url post=""><div class="ib">/payments/va/simulate</div></url>
 
 > This endpoint only works in sandbox mode using API Key which starts with `dp_test`
 
@@ -39,7 +39,7 @@ Following are the parameters to be sent in the request body:
 <MultiCodeBlock>
 
 ```bash
-curl --location --request POST 'https://api.durianpay.id/v1/payments/virtual-accounts/simulate' \
+curl --location --request POST 'https://api.durianpay.id/v1/payments/va/simulate' \
 --header 'Authorization: [Base64({Your_Server_Key}:)]' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -64,7 +64,7 @@ headers = {
   'Authorization': '[Base64({Your_Server_Key}:)]',
   'Content-Type': 'application/json'
 }
-conn.request("POST", "/v1/payments/virtual-accounts/simulate", payload, headers)
+conn.request("POST", "/v1/payments/va/simulate", payload, headers)
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))
@@ -76,7 +76,7 @@ OkHttpClient client = new OkHttpClient().newBuilder()
 MediaType mediaType = MediaType.parse("application/json");
 RequestBody body = RequestBody.create(mediaType, "{\n    \"amount\": \"12333\",\n    \"account_number\": \"88565004532522\",\n    \"force_fail\": false\n}");
 Request request = new Request.Builder()
-  .url("https://api.durianpay.id/v1/payments/virtual-accounts/simulate")
+  .url("https://api.durianpay.id/v1/payments/va/simulate")
   .method("POST", body)
   .addHeader("Authorization", "[Base64({Your_Server_Key}:)]")
   .addHeader("Content-Type", "application/json")
@@ -88,7 +88,7 @@ Response response = client.newCall(request).execute();
 var request = require('request');
 var options = {
   'method': 'POST',
-  'url': 'https://api.durianpay.id/v1/payments/virtual-accounts/simulate',
+  'url': 'https://api.durianpay.id/v1/payments/va/simulate',
   'headers': {
     'Authorization': '[Base64({Your_Server_Key}:)]',
     'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ require "uri"
 require "json"
 require "net/http"
 
-url = URI("https://api.durianpay.id/v1/payments/virtual-accounts/simulate")
+url = URI("https://api.durianpay.id/v1/payments/va/simulate")
 
 https = Net::HTTP.new(url.host, url.port)
 https.use_ssl = true
